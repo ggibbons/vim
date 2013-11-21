@@ -1,0 +1,86 @@
+*etl* ETL help file.
+
+
+
+todo                   *e-todo*
+
+		implement a process-group value - add column to etl_process
+		will need a function/script to get a  etl_process_key
+
+		myslq dump of jiveMessage ( 1433626 records ) piped to etl DB took 37 minutes  
+
+		test filemodified on large numbers
+		organize
+		docs
+
+		lft-rgt stuff for navigation_bridge
+
+		http://www.sitepoint.com/article/hierarchical-data-database/2
+
+		?? call mysql -e "load data"   in a sh script
+		or force it through cloverETL.
+		I prefer the shell script .. for now  
+		fetch the etl database info from etl_back_room
+		and parameerize.
+
+		message_transaction_fact
+
+
+		add a process to do referrals before clickstream - 
+			from the same data files.
+		(maybe do these as clickstream is processed )
+			I think so....
+
+
+			process deleted tables
+
+			getMessagePropip.sql  getUserProphomepage.sql   ... need to
+			be organzied into a process call
+
+
+			filter access.log for unique page_uri -> update_dim
+			by testing against current lookup
+			same for referrals - 
+
+			run these before clickstream
+			somthing weird on tickstodate between 
+			messagetrans ( output = string)
+		and clickstream (output = date)
+
+
+			add update when loookup fails 
+			for page_dim,useragent_dim
+	
+	mysqldump from  jive_hbo to etl of 1.4million jiveMessage  37 minutes
+	using select outfile  and LOAD DATA   5 + 21 minutes
+
+	Add to etl_process the first and last surrogate key values which were inserted.
+
+script-parms                   *e-script-parms*
+
+j jivetable
+e etltble
+
+J jivedatabase
+D datbaseconfig
+E etldatabase
+
+i inputfile
+s selectiondate
+S selectoutfile
+p etlprocessname
+P processIdFile
+r reformatfile
+o outputfile
+n inputfileformat
+f dbfields
+x debug
+d lwdivision
+c lwcustomer
+N stepno
+F failedlog
+l limit
+L lastdate
+X noload
+
+

@@ -1,0 +1,15 @@
+*liveworld* Liveworld help file.
+
+
+
+1. vi     |liveworld-vi|
+2. deploy     |liveworld-deploy|
+
+==================================================================================
+
+1. bash				*liveworld-vi*
+%f:t   filename only
+%f:p   fullpath
+
+
+2. deploy				*liveworld-deploy*

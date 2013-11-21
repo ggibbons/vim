@@ -1,0 +1,17 @@
+*pchange* P4 history         
+
+
+
+
+Change 17016 by ggibbons@ggibbons on 2006/05/24 14:08:00
+
+	prevent category headers from being sticky into these pages
+	add jiveProperty     profile.useCategoryHeader ( default true)
+	If true then if the profile name matches a category name - set the 
+	category to same - so that the header is used.
+
+Affected files ...
+
+... //depot/liveforum4/skins/standard/directory.jsp#21 edit
+... //depot/liveforum4/skins/standard/viewrichprofile.jsp#30 edit
+

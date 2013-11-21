@@ -1,0 +1,342 @@
+*gfg* Personal help file.
+
+
+Nuwy0rk3R  ( resin password)
+0. vi       |gfg-vi|
+1. bash     |gfg-bash|
+2. java     |gfg-java|
+3. perl     |gfg-perl|
+4. mysql    |gfg-mysql|
+5. bugs     |gfg-bugs|
+6. instances |gfg-inst|  |gfg-camp| 
+7. utilities  |gfg-util|
+8. Making things  |gfg-make|
+9. Firefox        |gfg-firefox|
+10. Liveworld        |gfg-liveworld|
+11. Handy        |gfg-handy|
+12. Deploy        |gfg-deploy|
+13. jive_startup.xml |gfg-startup|
+14. ssh tunneling |gfg-ssh|
+
+==================================================================================
+0. vi                           *gfg-vi*
+%f:t   filename only
+%f:p   fullpath
+
+
+1. bash				*gfg-bash*
+		http://www.splike.com/howtos/bash_faq.html
+		http://www.linuxien.com/docs/bash/shellscript.html
+		http://www.tldp.org/LDP/abs/html/
+
+                lsof -i -P -a -p NNNN
+
+		adding timestamp to file name $filename$(date '+%H:%M:%S')
+		String Operation
+
+		* ${varname:-word}        Return var if exists and is not null, else word
+		* ${varname:+word}        Return word if var exists and is not null, else null
+		* ${varname:?mess}        Return var if exists and is not null, else
+		display mess and return from script with error
+
+	test                 *gfg-test*
+	See test command for test complete list of options
+
+		* string1 = string2 String 1 equals string 2
+		* string1 !=string2 String 1 not equals string 2
+		* -n string String is not zero length
+		* -z string String is zero length
+		* -d FILE File is a directory
+		* -e FILE File exists
+		* -f FILE File exists and is a regular file
+		* -r FILE File exists and is readable
+		* -s FILE File exists and has length greater than zero
+		* -w FILE File exists and is writable
+		* -x FILE File exists and is executable
+		* num1 -eq num2 Number 1 equals number 2
+		* num1 -ne num2 Number 1 not equals number 2
+		* num1 -lt num2 Number 1 less than number 2
+		* num1 -le num2 Number 1 less than or equals number 2
+		* num1 -gt num2 Number 1 greater than number 2
+		* num1 -ge num2 Number 1 greater than or equals number 2
+
+#
+		Pattern Operations   *gfg-pat*
+
+		* ${variable#pattern}     If the pattern matches the beginning of the
+							variable value, delete the shortest part  that
+							matches and return the rest
+		* ${variable##pattern}    If the pattern matches the beginning the of
+							variable value, delete the longest part  that 
+							matches and return the rest
+		* ${variable%pattern}     If the pattern matches the end of the variable
+							value, delete the shortest part  that matches and
+							return the rest
+		* ${variable%%pattern}    If the pattern matches the end of the variable
+							value, delete the longest part  that matches and
+							return the rest
+
+
+
+		scriptname=`basename "$0"`
+		When doing tests (if and case statements), quote your variables:
+
+		if [ ! "$force" ] && [ -e "$destfile" ]
+		then
+			if [ "$verbose" ]
+			then
+			echo Skipping $destfile
+			fi
+		fi
+		
+		fullfilepath="$dirname$basename"  # concatenate
+
+		myvar=abcdef
+		slice_of_myvar=${myvar:3:2}
+
+
+		When executing anything, quote your variables
+		 if they are a single argument. Bash will quote the variable for you.
+
+		 mkdir -p "$destdir"
+
+
+		$var      Value of variable var
+		"$var"    Is null if variable is undefined
+			  avoids some shell syntax errors if variable is undefined
+		${var}    Value of variable var
+			  avoids confusion when concatenating with text
+		${#var}   Gives the length of the string contained in var
+		${var:FIRST:N} Extract string from var starting at FIRST position
+			   and continuing for N-1 characters.  Note FIRST starts at 0.
+
+
+
+
+2. java				*gfg-java*
+		String:
+			split(String regex)
+		HashMap:
+			containsKey(Object key)
+			containsValue(Object value) 
+			entrySet().iterator()
+			keySet().iterator()
+    	Iterator:
+			next();
+			hasNext()
+		System:
+			 currentTimeMillis()
+			 Properties		getProperties()
+
+
+
+3. perl				*gfg-perl*
+perl -MCPAN -e "CPAN::Shell->force(qw(install IO::Socket::SSL));"
+
+
+
+
+4. mysql			*gfg-mysql*
+    select threadID from jiveThread where rootMessageID in (select jm.messageID from jiveMessage jm left join jiveUser ju on jm.userID = ju.userID where  jm.UserID is not NULL and ju.userID is NULL);
+    select jm.messageID,jm.userID from jiveMessage jm left join jiveUser ju on jm.userID = ju.userID where  jm.UserID is not NULL and ju.userID is NULL;
+    select  *  from jiveThread jt left  join jiveMessage jm on jt.rootMessageID = jm.messageID where jm.messageID is NULL;
+    select distinct jm.userId from jiveWatch jm left join jiveUser ju on jm.userId = ju.userId where ju.email is NULL;
+    select distinct jm.userId from jiveMessage jm left join jiveUser ju on jm.userId = ju.userId where ju.userId is NULL;
+    select  jt.forumID,jt.rootMessageID  from jiveThread jt  left  join jiveMessage jm on jt.rootMessageID = jm.messageID where jm.messageID is NULL;
+
+Find the threads with the highest message count
+select jm.forumId, jm.threadId, count(*) cnt from jiveMessage jm group by jm.threadId order by cnt desc limit 0, 10;
+
+
+    To copy a database - login to the target server machine -
+	issue "create database jive_kitchens"
+	mysqldump --opt -h mysql5 jive_kitchens  |  mysql -h data0 -P 3305 -C jive_kitchens 
+
+5. bugs      *gfg-bugs*
+
+
+6. Instances      *gfg-inst*
+
+MTV: mtvla.stage.liveworld.com  dev1:10550
+
+HBO:
+apps0 port 10202    http://hbo.stage.liveworld.com
+T3L3v1$i0n
+
+ 0 0/2 * * * ? *	    
+
+com.liveworld.forum.util.CategoryStatsTask
+0 15 3 * * ? *
+
+July 5 - update hbo to cc_1_029 then  add hbo_patch_to_cc_1_029    
+current servers are apps27 and apps28
+
+
+QVC:
+liveforum3 QVC on resin23 resin24 port 10241
+QVC = PurcH@s3
+jdbc:mysql://mysql5.back.liveworld.com:3307/jive_qvc
+qvc  account:  70013319  / pin=2324   sanjupaco/h0llister
+
+backstage global fontsize   was 11 pt:
+
+jdbc:mysql://data13.back.liveworld.com:3306/jive_qvc
+<link rel=STYLESHEET 
+href="http://www.qvc.com/liveworld/liveworld.css" type="text/css">
+
+qvc  account:  70013319  / pin=2324   sanjupaco/h0llister
+Anne Luttrell
+484-701-8271
+Anne_Luttrell@qvc.com
+
+As of Jan 07, QVC is based on cc_1_023
+
+
+
+
+
+Campbells:  *gfg-camp*
+
+sanjupaco-camp  71583496 / 0000   qvc13
+
+
+Herbert Gambill HBO  |  212.512.5028herbert.gambill@hbo.com
+campbellkitchen.com registration  ggibbons@liveworld.com/potato
+
+mark.weidner@refinery.com
+267.615.2251
+
+TODO: Wed Sep  6 10:28:51 PDT 2006
+    Tag current apps0 build - copy label
+    update new includes/styles.jsp
+    perhaps update the header.jsp constants-fixed.jsp
+
+
+jdbc:mysql://mysql5.back.liveworld.com/jive_kitchens
+T@bl3Manner$
+resin23/24 10501
+campbellkitchen.com registration  ggibbons@liveworld.com/potato
+
+.netfamilynews {
+	border: 1px solid #000;
+	background-color: #FFC;
+	margin-bottom: 1em;         GFG - remove this line to correct extra margin from blog-headlines.jsp 
+}
+
+cc_1_025_apps0_kitchens  - this label is the latest before the new
+gui/components upgrade
+
+Some settings to be aware of !!!
+Avatars:
+    admin->settings->attachments  - set to allow ALL and make the exception
+    list empty
+    admin->settings->avatars       - allow registered users
+    cc.useAvatarImage true
+    skin.default.avatarImgSize 70
+    skin.default.avatarSize 70
+
+    cc.mobile.showSecretWord   false
+    watches.enables   true
+
+Aug 31 2006
+   1) use this: http://www.cscassets.com/common/styles.css  ( not a local copy
+   ..otherwise it's not quite correct ??????)
+   2) user local campbells_kitchens.css - greatly reduced
+   3) Changed liveworld.header and footer to remove some campbells divs
+   4) remove the width parameter from lw-styles BODY to make centering work
+
+Community Center:
+    set liveworld.boardsProfileID = 500000219 ( or whatever the Forums category is)  to make gallery feautures work
+    set liveworld.centralGalleryCatID = 1 for gallery
+    votes.setThreadProps = true   .. for immediate thread votes
+ 
+  push_apps0_kitchenscc_200610310905   .. last label working before pushing  passed_httpunit_20061031  ( chong's working lable)
+
+7. Utilities *gfg-util*
+cron job running FixDbUsrers
+0 4 * * * java -classpath
+"/usr/local/bin/:/usr/local/webapps/ebdb4us-db1/WEB-INF/lib/mysql-connector-java-3.0.14-production-bin.jar"
+FixDbUsers jive_ebay_us data1:3306 data2:3306 >& /var/log/fixDbUsers.log 2>&1
+
+8. Making things   *gfg-make*
+
+isainfo -bv
+64-bit sparcv9 applications
+isainfo -kv
+64-bit sparcv9 kernel modules
+
+To successfully compile vim on a 64-bit Solaris 8 system, use the -m64 flag with gcc to generate code for a 64-bit environment:
+
+CC="gcc -m64" ./configure
+make
+make install
+
+
+
+9. Firefox         *gfg-firefox*
+ Addons
+ https://addons.mozilla.org/extensions/moreinfo.php?id=421
+ http://stricto-sensu.net/projets/extensions/inspectelement
+ http://jennifermadden.com/scripts/ViewRenderedSource.html
+
+ InspectElement
+     https://addons.mozilla.org/extensions/moreinfo.php?id=421
+     Install that and restart FF.
+     Then install this: http://stricto-sensu.net/projets/extensions/inspectelement
+	 and click this: [ ] Override 'maxVersion compatibility checking.
+
+ shift-backspage unsets capslock on the kinesis keyboard
+
+
+blacktree.coaforge.com  sanjupaco/h0llisterqs
+
+10.Liveworld *gfg-liveworld*
+
+Ratings need this background cron job:
+*/5 * * * * /usr/local/bin/lynx -dump
+"http://localhost:10501/backstage/lwTallyVotes.jsp" > /dev/null 2>&1
+
+
+11.Handy *gfg-handy*
+
+  parse logs for ip
+  for i in access-20061129*; do cat $i | awk '{print $1}' >> /usr/global/tmp/hboaccess.log ; done
+  cat /usr/global/tmp/hboaccess.log | sort | uniq -c | sort -r | head
+
+  dif -x ip.here.     for reverse lookup
+
+12.Handy *gfg-deploy*
+ant deploy-war -Dprops.filename=config/sample.properties
+
+13. gc logs and jvm dumps
+    gc logs get rolled on instance control
+       file stamp matches end of file
+       times are logged and duration
+
+    jvm logs - also get concatenated -end of file represents last dump
+
+ Script for finding vote in accesslogs
+ cat access-200712* | awk '{print  $1 " " $2 " " $9 " " $10 }' | grep vote.jspa | sort  | uniq -c | sort -r | head -200  | tee /tmp/junk
+
+14.  jive_startup.xml  *gfg-startup*
+    <log>
+        <debug>
+            <enabled>true</enabled>
+        </debug>
+    </log>
+    <cronTasks>
+        <enabled>false</enabled>
+    </cronTasks>
+    <watchEmails>
+        <enabled>false</enabled>
+    </watchEmails>
+
+
+15.  ssh tunneling  *gfg-ssh*
+
+ ssh -L 3307:data13:3306 apps51.back.liveworld.com
+ add to /etc/hosts
+ 127.0.0.1  mylocal
+ <serverURL>jdbc:mysql://mylocal:3307/jive_genworth</serverURL>
+
+16. 5512997470869fd973c8f69d9845ea06  is hash for  V3loc!tY

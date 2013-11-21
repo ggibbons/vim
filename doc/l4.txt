@@ -1,0 +1,28 @@
+
+*l4* Personal help file.
+
+
+
+1. hbo     |l4-hbo|
+2. qvc     |l4-qvc|
+3. misc    |l4-misc|
+
+
+==================================================================================
+
+1. hbo                         *gfg-hbo*
+
+    sweeper-push : lables :  patch_sweeperSearch2 patch3_sweeperSearch  - Wed Apr 26 09:49:10 PDT 2006
+
+
+
+2. qvc                         *gfg-qvc*
+
+
+
+3. misc                         *gfg-misc*
+   null email in jiveWatch:  Wed Apr 26 11:57:48 PDT 2006
+   jivesoftware/forum/database/EmailWatcUpdateTask.java
+
+jivesoftware/forum/action/UserSettingsAction.java
+
