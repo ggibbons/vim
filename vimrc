@@ -9,7 +9,7 @@ set pastetoggle=<F11>
 :  au BufWritePost /Users/ggibbons/.vim/doc/gfg.txt bw /Users/ggibbons/.vim/doc/gfg.txt
 :  au BufWritePost /Users/ggibbons/.vim/doc/etl.txt helptags ~/.vim/doc 
 :  au BufWritePost * if getline(1) =~ "^#!/bin/" | silent !chmod a+x <afile>
-:  autocmd BufWritePre .vimrc source $MYVIMRC
+:  autocmd BufWritePost .vimrc source $MYVIMRC
 :  autocmd BufReadPost *
     \ if line("'\"") > 1 && line("'\"") <= line("$") |
     \   exe "normal! g`\"" |
@@ -483,10 +483,17 @@ map <silent> <C-E> :call ToggleVExplorer()<CR>
 " Hit enter in the file browser to open the selected
 " file with :vsplit to the right of the browser.
 let g:netrw_browse_split = 4
+let g:netrw_preview = 1
 let g:netrw_altv = 1
 
 " Default to tree mode
 let g:netrw_liststyle=3
 
 " Change directory to the current buffer when opening files.
-set autochdir
+"set autochdir
+
+:function! Vgf(name)
+:execute 'vimgrep' a:name 'bin/*.py'
+:endfunction
+command! -nargs=* Vgf call Vgf( '<f-args>' )
+command! Defs :g/def /# 
