@@ -1,5 +1,7 @@
 "set list     shows tailing white space
 "set verbose=9
+"let loaded_matchparen = 1
+"au VimEnter * :NoMatchParen
 set clipboard=unnamed
 call pathogen#infect()
 set pastetoggle=<F11>
@@ -20,12 +22,12 @@ autocmd FileType python set omnifunc=pythoncomplete#Complete
 au BufRead,BufNewFile *.t set filetype=perl
 au FileType c,cpp,css,javascript,java,html,rb  let b:match_words = &matchpairs
 "autocmd FileType python,ruby  match ErrorMsg '\%>79v.\+'
-autocmd FileType python nmap <buffer> <leader>c :new<CR>:r !pep8 #<CR><CR><C-W><C-P>
+"autocmd FileType python nmap <buffer> <leader>c :new<CR>:r !pep8 #<CR><CR><C-W><C-P>
 autocmd FileType ruby nmap <buffer> <leader>c :w<CR> :!rake
 autocmd FileType python autocmd BufWritePre <buffer> :%s/\s\+$//e
 "autocmd FileType python set path+=.,/Users/ggibbons/gf/gfmain/**
 autocmd FileType perl set path+=/Users/ggibbons/gf/gfmain/**
-autocmd FileType python set makeprg=make\ pylint1\ f=%:t:r
+autocmd FileType python set makeprg=make\ pylint\ f=%:t:r
 "need absolute path below ...
 
 nmap <buffer> <leader>pr :new<CR>:r !tannex<CR><CR>
@@ -143,7 +145,7 @@ hi Cursorline term=underline cterm=underline ctermfg=5 gui=underline guifg=Slate
 :let tag2 = g:MyTagName . "                   *" . a:name ."-" . g:MyTagName . "*"
 :call setline(".",tag2)
 :endfunction
-
+:let Grep_Default_Filelist = 'bin/*.py' 
 set expandtab
 "highlight all matches if the visualmode selection
 :vmap // y/<C-R>"<CR>
@@ -263,9 +265,8 @@ let Vimplate = "$HOME/bin/vimplate"
 nmap <M-Left> :bprev<CR>
 nmap <M-Right> :bnext<CR>
 
-nmap <leader>p m[%v%:sleep 350m<CR>`[
-
-imap <leader>p <ESC>m[%v%:sleep 350m<CR>`[a 
+:nmap <leader>o :cn<CR>
+:nmap <leader>p :cp<CR>
 imap <del> <bs>
 inoremap jj <ESC>
 "inoremap [ []<Left>
@@ -416,8 +417,8 @@ function! Gofl()
     :normal gF
 endfunction
 ":nmap ggf :s/", line//<CR> | normal gF
-":nmap <leader>g :s/", line//<CR>
-map \g :s/", line// <bar> normal 2wgF <cr>
+":nmap <leader>g :vim <C-R><C-W> bin/*.py<CR>
+:nmap <leader>g :g/<C-R><C-W>/#<CR>
 map \\ :e#<CR>
 map \| :g/^\d\d-\d\d /s/^.\{15}//<CR>
 " set functions keys with actual values received by vim
@@ -497,3 +498,9 @@ let g:netrw_liststyle=3
 :endfunction
 command! -nargs=* Vgf call Vgf( '<f-args>' )
 command! Defs :g/def /# 
+nnoremap ,cd :cd %:p:h<CR>
+map <leader>' F"i_(<Esc>2f"a)<Esc>
+map <leader>h :noh<CR>
+map <leader>y :YcmRestartServer<CR>
+map <leader>B :Grep <C-R><C-W> bin/*.py <CR> 
+map <leader>T :Grep <C-R><C-W> p4-test/dev/* <CR> 
