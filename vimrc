@@ -452,12 +452,21 @@ function! Wrun()
 	:w
     :!%
 :endfunction
+function! RemoveEscapeSeq()
+    :%s/[\x1b]\[\(\d\+\)m//
+endfunction
+map <leader>re :call RemoveEscapeSeq()<CR> 
 function! WrunT()
-	:w
-    :!rgf %:t:r
+    let tfile = expand("%:t:r")
+	:vert rightbelow new
+    :execute '$read !rgf '. tfile 
+    :call RemoveEscapeSeq()
+    :1 
+"    :%s/[\x1b]\[\(\d\+\)m//
 :endfunction
 autocmd FileType python nmap \r :w<CR>:!%<CR>
-au BufRead,BufNewFile *.t  nmap \r :w<CR>:!rgf %:t:r<CR>
+"au BufRead,BufNewFile *.t  nmap \r :w<CR>:!rgf %:t:r<CR>
+au BufRead,BufNewFile *.t  nmap \r :w<CR>:call WrunT()<CR>
 command! Setw let g:netrw_chgwin= winnr()
 
 " Toggle Vexplore with Ctrl-E
