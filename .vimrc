@@ -229,9 +229,9 @@ hi Cursorline term=underline cterm=underline ctermfg=5 gui=underline guifg=Slate
 :endfunction
 autocmd FileType python let Grep_Default_Filelist = 'bin/*.py' 
 ":let Grep_Default_Filelist = 'bin/*.py' 
-"autocmd FileType python let Grep_Default_Filelist = 'bin/*.py' 
-:let Grep_Default_Filelist = '*.cc *.h' 
-:let Rgrep_Start_Dir = '/Users/ggibbons/server/depot/main/p4' 
+autocmd FileType python let Grep_Default_Filelist = 'bin/*.py' 
+autocmd FileType cpp let Grep_Default_Filelist = '*.cc *.h' 
+autocmd FileTYpe cpp let Rgrep_Start_Dir = '/Users/ggibbons/server/depot/main/p4' 
 set expandtab
 "highlight all matches if the visualmode selection
 :vmap // y/<C-R>"<CR>
