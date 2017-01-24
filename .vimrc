@@ -1,4 +1,12 @@
 set nocompatible              " be iMproved, required
+inoremap  <Up>     <NOP>
+inoremap  <Down>   <NOP>
+inoremap  <Left>   <NOP>
+inoremap  <Right>  <NOP>
+noremap   <Up>     <NOP>
+noremap   <Down>   <NOP>
+noremap   <Left>   <NOP>
+noremap   <Right>  <NOP>
 filetype off                  " required
 
 " set the runtime path to include Vundle and initialize
@@ -14,6 +22,11 @@ Plugin 'VundleVim/Vundle.vim'
 " Keep Plugin commands between vundle#begin/end.
 " plugin on GitHub repo
 Plugin 'tpope/vim-fugitive'
+Plugin 'tpope/vim-surround'
+Plugin 'tpope/vim-dispatch'
+Plugin 'valloric/youcompleteme'
+Plugin 'yegappan/grep'
+Plugin 'ctrlpvim/ctrlp.vim.git'
 " plugin from http://vim-scripts.org/vim/scripts.html
 "Plugin 'L9'
 " Git plugin not hosted on GitHub
@@ -31,7 +44,7 @@ Plugin 'tpope/vim-fugitive'
 call vundle#end()            " required
 filetype plugin indent on    " required
 " To ignore plugin indent changes, instead use:
-"filetype plugin on
+filetype plugin on
 "
 " Brief help
 " :PluginList       - lists configured plugins
@@ -71,9 +84,24 @@ autocmd FileType ruby nmap <buffer> <leader>c :w<CR> :!rake
 autocmd FileType python autocmd BufWritePre <buffer> :%s/\s\+$//e
 "autocmd FileType python set path+=.,/Users/ggibbons/gf/gfmain/**
 autocmd FileType perl set path+=/Users/ggibbons/gf/gfmain/**
-autocmd FileType python set makeprg=make\ pylint\ f=%:t:r
+autocmd FileType python set makeprg=make\ pylint\ f=%:t:r\ 2>&1
+"autocmd FileType python set makeprg=pylint\ --reports=n\ --msg-template={path}:{line}: [{msg_id}({symbol}), {obj}] {msg})]  \ %:p
+autocmd FileType pyton set makeprg=pylint\ --reports=n\ --msg-template=\"{path}:{line}:\ {msg_id}\ {symbol},\ {obj}\ {msg}\"\ %:p
+autocmd FileType python set errorformat=%f:%l:\ %m
 "need absolute path below ...
 
+
+
+""""""""
+" Go to last file(s) if invoked without arguments.
+autocmd VimLeave * nested if (!isdirectory($HOME . "/.vim")) |
+    \ call mkdir($HOME . "/.vim") |
+    \ endif |
+    \ execute "mksession! " . $HOME . "/.vim/Session.vim"
+
+autocmd VimEnter * nested if argc() == 0 && filereadable($HOME . "/.vim/Session.vim") |
+    \ execute "source " . $HOME . "/.vim/Session.vim"
+""""""""
 nmap <buffer> <leader>pr :new<CR>:r !tannex<CR><CR>
 "  au BufLeave /Users/ggibbons/.vim/doc/gfg.txt bw /Users/ggibbons/.vim/doc/gfg.txt
 :endif
@@ -199,7 +227,11 @@ hi Cursorline term=underline cterm=underline ctermfg=5 gui=underline guifg=Slate
 :let tag2 = g:MyTagName . "                   *" . a:name ."-" . g:MyTagName . "*"
 :call setline(".",tag2)
 :endfunction
-:let Grep_Default_Filelist = 'bin/*.py' 
+autocmd FileType python let Grep_Default_Filelist = 'bin/*.py' 
+":let Grep_Default_Filelist = 'bin/*.py' 
+"autocmd FileType python let Grep_Default_Filelist = 'bin/*.py' 
+:let Grep_Default_Filelist = '*.cc *.h' 
+:let Rgrep_Start_Dir = '/Users/ggibbons/server/depot/main/p4' 
 set expandtab
 "highlight all matches if the visualmode selection
 :vmap // y/<C-R>"<CR>
@@ -323,11 +355,10 @@ nmap <M-Right> :bnext<CR>
 
 :nmap <leader>o :cn<CR>
 :nmap <leader>p :cp<CR>
-imap <del> <bs>
 inoremap jj <ESC>
-"inoremap [ []<Left>
-"inoremap ( ()<Left>
-"inoremap { {}<Left>
+"inoremap [[ []<Left>
+"inoremap (( ()<Left>
+"inoremap {{ {}<Left>
 set timeoutlen=275
 function! s:DiffWithSaved()
   let filetype=&ft
@@ -361,6 +392,16 @@ function! Inclsub(fstring)
 	return s:fstring
 
 endfunction
+function! ToggleExpSortDir()
+    if g:netrw_sort_direction =~ "reverse"
+        let g:netrw_sort_direction="normal"
+    else
+        let g:netrw_sort_direction="reverse"
+    endif
+endfunction
+nnoremap <silent> ss :call ToggleExpSortDir()<CR>
+
+
 :command! -nargs=* -complete=shellcmd R new | setlocal buftype=nofile bufhidden=hide noswapfile | r !<args>
 set complete-=i
 map gdt vat<Esc>`<df>`>F<df>
@@ -465,6 +506,7 @@ endfunction
 :noremap <leader>b :FufBuffer<CR>
 :noremap <leader>b :FufBuffer<CR>
 :noremap <leader>w <C-W><C-W>
+:noremap <C-A> <C-W><C-W>
 :nnoremap \; :<c-u>call MultiCursorSearch('<c-r><c-w>')<cr>
 let g:multicursor_quit = "\:"
 function! Gofl()
@@ -551,7 +593,7 @@ map <silent> <C-E> :call ToggleVExplorer()<CR>
 "  http://superuser.com/questions/377501/keep-cursor-in-netrw-window-when-browsing-files-in-vim
 " Hit enter in the file browser to open the selected
 " file with :vsplit to the right of the browser.
-let g:netrw_browse_split = 4
+"let g:netrw_browse_split = 4
 let g:netrw_preview = 1
 let g:netrw_altv = 1
 let g:netrw_sort_by = "time"
@@ -591,4 +633,28 @@ map ;b :Grep <C-R><C-W> "%:p:h"/*.py<CR>
 map ;t :Grep <C-R><C-W> "%:p:h"/* <CR>
 map vv :vertical: resize +30<CR>
 map vb :vertical: resize -30<CR>
-let g:netrw_list_hide='p4gf_g2p_matrix*,p4gf_fastex*'
+"let g:netrw_list_hide='p4gf_g2p_matrix*,p4gf_fastex*'
+let @d=':%s/^.*DEBUG/DEBUG/^M:%s/^.*INFO/INFO/'
+
+"" braces completion ...
+":inoremap ( ()<Esc>i
+:inoremap (( ()
+":inoremap { {}<Esc>i
+:inoremap {{ {}
+":inoremap [ []<Esc>i
+:inoremap [[ []
+" while in insert mode, move over one char and continue insert
+:inoremap <C-L> <Esc>la
+":inoremap <C-P> <Esc>/[)}"'\]>]<CR>:nohl<CR>a
+
+"highlight ColorColumn ctermbg=magenta
+"call matchadd('ColorColumn', '\%100v', 100)
+let g:airline#extensions#branch#enabled = 1
+" toggle nu and rnu together
+:map ;n :set nu!<CR>:set rnu!<CR>
+:map ;; d$
+"nnoremap <silent> gc :redir @a<CR>:g//#<CR>:redir END<CR>:new<CR>:put! a<CR>
+nnoremap <silent> gc :redir >>matches.tmp<CR>:g//#<CR>:redir END<CR>:new matches.tmp<CR>
+inoremap <C-a> <ESC>A
+inoremap <C-x> <DEL>
+nnoremap <-C-G> :g/<C-R><C-W>/#<CR>
