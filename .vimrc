@@ -86,7 +86,8 @@ autocmd FileType python autocmd BufWritePre <buffer> :%s/\s\+$//e
 autocmd FileType perl set path+=/Users/ggibbons/gf/gfmain/**
 autocmd FileType python set makeprg=make\ pylint\ f=%:t:r\ 2>&1
 "autocmd FileType python set makeprg=pylint\ --reports=n\ --msg-template={path}:{line}: [{msg_id}({symbol}), {obj}] {msg})]  \ %:p
-autocmd FileType pyton set makeprg=pylint\ --reports=n\ --msg-template=\"{path}:{line}:\ {msg_id}\ {symbol},\ {obj}\ {msg}\"\ %:p
+autocmd FileType python set makeprg=pylint\ --reports=n\ --msg-template=\"{path}:{line}:\ {msg_id}\ {symbol},\ {obj}\ {msg}\"\ %:p
+autocmd FileType python set makeprg=pylint\ --rcfile=pylint13.cfg\ p4gf_log.py\ %:p\ 2>&1
 autocmd FileType python set errorformat=%f:%l:\ %m
 "need absolute path below ...
 
@@ -231,7 +232,8 @@ autocmd FileType python let Grep_Default_Filelist = 'bin/*.py'
 ":let Grep_Default_Filelist = 'bin/*.py' 
 autocmd FileType python let Grep_Default_Filelist = 'bin/*.py' 
 autocmd FileType cpp let Grep_Default_Filelist = '*.cc *.h' 
-autocmd FileTYpe cpp let Rgrep_Start_Dir = '/Users/ggibbons/server/depot/main/p4' 
+autocmd FileType cpp let Rgrep_Start_Dir = '/Users/ggibbons/server/depot/p17.1/p4' 
+"autocmd FileType cpp let Rgrep_Start_Dir = '/Users/ggibbons/gconn/main-gconn/gconn/src' 
 set expandtab
 "highlight all matches if the visualmode selection
 :vmap // y/<C-R>"<CR>
@@ -629,7 +631,8 @@ map <leader>h :noh<CR>
 map <leader>y :YcmRestartServer<CR>
 map <leader>B) :Grep <C-R><C-W> bin/*.py <CR> 
 map <leader>T :Grep <C-R><C-W> p4-test/dev/* <CR> 
-map ;b :Grep <C-R><C-W> "%:p:h"/*.py<CR>
+autocmd FileType python map ;b :Grep <C-R><C-W> "%:p:h"/*.py<CR>
+autocmd FileType cpp map ;b :Rgrep <C-R><C-W><CR>
 map ;t :Grep <C-R><C-W> "%:p:h"/* <CR>
 map vv :vertical: resize +30<CR>
 map vb :vertical: resize -30<CR>

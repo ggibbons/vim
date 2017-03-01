@@ -84,3 +84,10 @@ L lastdate
 X noload
 
 
+                   *e-*
+determined
+                   *e-*
+dmin=N
+                   *e-*
+result
+
