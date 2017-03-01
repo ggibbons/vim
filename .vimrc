@@ -232,7 +232,10 @@ autocmd FileType python let Grep_Default_Filelist = 'bin/*.py'
 ":let Grep_Default_Filelist = 'bin/*.py' 
 autocmd FileType python let Grep_Default_Filelist = 'bin/*.py' 
 autocmd FileType cpp let Grep_Default_Filelist = '*.cc *.h' 
-autocmd FileType cpp let Rgrep_Start_Dir = '/Users/ggibbons/server/depot/p17.1/p4' 
+"autocmd FileType cpp let Rgrep_Start_Dir = '/Users/ggibbons/server/depot/p17.1/p4' 
+autocmd BufEnter,BufRead */depot/main/*  let Rgrep_Start_Dir = '/Users/ggibbons/server/depot/main/p4' 
+autocmd BufEnter,BufRead */depot/p17.1/*  let Rgrep_Start_Dir = '/Users/ggibbons/server/depot/p17.1/p4' 
+autocmd BufEnter,BufRead */gconn/main-gconn/*  let Rgrep_Start_Dir = '/Users/ggibbons/gconn/main-gconn/gconn/src' 
 "autocmd FileType cpp let Rgrep_Start_Dir = '/Users/ggibbons/gconn/main-gconn/gconn/src' 
 set expandtab
 "highlight all matches if the visualmode selection
