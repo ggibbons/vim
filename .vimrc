@@ -73,6 +73,7 @@ set pastetoggle=<F11>
     \ if line("'\"") > 1 && line("'\"") <= line("$") |
     \   exe "normal! g`\"" |
     \ endif
+ 
 :filetype plugin indent on 
 autocmd FileType python set omnifunc=pythoncomplete#Complete
 ":source ~/.vim/plugin/matchit.vim
@@ -229,15 +230,18 @@ hi Cursorline term=underline cterm=underline ctermfg=5 gui=underline guifg=Slate
 :call setline(".",tag2)
 :endfunction
 autocmd FileType python let Grep_Default_Filelist = 'bin/*.py' 
-":let Grep_Default_Filelist = 'bin/*.py' 
 autocmd FileType python let Grep_Default_Filelist = 'bin/*.py' 
 autocmd FileType cpp let Grep_Default_Filelist = '*.cc *.h' 
-"autocmd FileType cpp let Rgrep_Start_Dir = '/Users/ggibbons/server/depot/p17.1/p4' 
 autocmd BufEnter,BufRead */depot/main/*  let Rgrep_Start_Dir = '/Users/ggibbons/server/depot/main/p4' 
 autocmd BufEnter,BufRead */depot/p17.1/*  let Rgrep_Start_Dir = '/Users/ggibbons/server/depot/p17.1/p4' 
 autocmd BufEnter,BufRead */gconn/main-gconn/*  let Rgrep_Start_Dir = '/Users/ggibbons/gconn/main-gconn/gconn/src' 
+autocmd BufEnter,BufRead */depot/main/*  set tags=./tags,/Users/ggibbons/server/depot/main/p4/tags 
+autocmd BufEnter,BufRead */depot/p17.1/*  set tags=./tags,/Users/ggibbons/server/depot/p17.1/p4/tags 
+autocmd BufEnter,BufRead */gconn/main-gconn/*  set tags=./tags,/Users/ggibbons/gconn/main-gconn/gconn/src/tags 
+autocmd BufNewFile,BufRead */server/* set ts=8 sw=4 noexpandtab cinoptions=^1s
+autocmd BufNewFile,BufRead */gconn/* set ts=8 sw=4 noexpandtab cinoptions=^1s
 "autocmd FileType cpp let Rgrep_Start_Dir = '/Users/ggibbons/gconn/main-gconn/gconn/src' 
-set expandtab
+"set expandtab
 "highlight all matches if the visualmode selection
 :vmap // y/<C-R>"<CR>
 :noremap <Space> <PageDown>
