@@ -24,7 +24,7 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-dispatch'
-Plugin 'valloric/youcompleteme'
+" Plugin 'valloric/youcompleteme'
 Plugin 'yegappan/grep'
 Plugin 'ctrlpvim/ctrlp.vim.git'
 " plugin from http://vim-scripts.org/vim/scripts.html
@@ -95,7 +95,7 @@ autocmd FileType python set errorformat=%f:%l:\ %m
 
 
 """"""""
-" Go to last file(s) if invoked without arguments.
+" Go to previously edited  file(s) if invoked without arguments.
 autocmd VimLeave * nested if (!isdirectory($HOME . "/.vim")) |
     \ call mkdir($HOME . "/.vim") |
     \ endif |
@@ -109,15 +109,14 @@ nmap <buffer> <leader>pr :new<CR>:r !tannex<CR><CR>
 :endif
 autocmd FileType html source $HOME/.vim/ftplugin/html.vim
 set nocompatible
-highlight ColorColumn ctermbg=lightgrey guibg=lightgrey
 "set undofile
 "colorscheme darkblue
 " colorscheme gzellner
 colorscheme gfg
-highlight ColorColumn ctermbg=lightgrey guibg=lightgrey
-"set colorcolumn=79
 "filetype on
 syntax on
+highlight ColorColumn ctermbg=7 guibg=Grey90
+set colorcolumn=80
 hi clear SpellBad
 hi SpellBad cterm=underline
 let Tlist_Ctags_Cmd="/usr/local/bin/ctags"
@@ -173,6 +172,10 @@ set directory=~/.vim/_swaps   " store swap files here
 :vmap <leader>z y:%s/<C-R>"/
 :vmap <leader>] :s/^/#/<CR>:noh<CR>
 :vmap <leader>[ :s/^#//<CR>:noh<CR>
+":vmap <leader>] :s/^/\/\//<CR>:noh<CR>
+":vmap <leader>[ :s/^\/\///<CR>:noh<CR>
+autocmd FileType cpp  vmap <leader>] :s/^/\/\//<CR>:noh<CR>
+autocmd FileType cpp vmap <leader>[ :s/^\/\///<CR>:noh<CR>
 "the following enables vimdiff to ignore whitespace when comparing files
 set diffexpr=MyDiff()
 function! MyDiff()
@@ -232,15 +235,17 @@ hi Cursorline term=underline cterm=underline ctermfg=5 gui=underline guifg=Slate
 autocmd FileType python let Grep_Default_Filelist = 'bin/*.py' 
 autocmd FileType python let Grep_Default_Filelist = 'bin/*.py' 
 autocmd FileType cpp let Grep_Default_Filelist = '*.cc *.h' 
-autocmd BufEnter,BufRead */depot/main/*  let Rgrep_Start_Dir = '/Users/ggibbons/server/depot/main/p4' 
-autocmd BufEnter,BufRead */depot/p17.1/*  let Rgrep_Start_Dir = '/Users/ggibbons/server/depot/p17.1/p4' 
-autocmd BufEnter,BufRead */gconn/main-gconn/*  let Rgrep_Start_Dir = '/Users/ggibbons/gconn/main-gconn/gconn/src' 
-autocmd BufEnter,BufRead */depot/main/*  set tags=./tags,/Users/ggibbons/server/depot/main/p4/tags 
-autocmd BufEnter,BufRead */depot/p17.1/*  set tags=./tags,/Users/ggibbons/server/depot/p17.1/p4/tags 
-autocmd BufEnter,BufRead */gconn/main-gconn/*  set tags=./tags,/Users/ggibbons/gconn/main-gconn/gconn/src/tags 
+autocmd BufEnter,BufRead */depot/main/*  let Rgrep_Start_Dir = '$HOME/server/depot/main/p4' 
+autocmd BufEnter,BufRead */depot/p17.1/*  let Rgrep_Start_Dir = '$HOME/server/depot/p17.1/p4' 
+autocmd BufEnter,BufRead */depot/p17.2/*  let Rgrep_Start_Dir = '$HOME/server/depot/p17.2/p4' 
+autocmd BufEnter,BufRead $HOME/gconn/*  let Rgrep_Start_Dir = '$HOME/gconn/gconn/src' 
+autocmd BufEnter,BufRead */depot/main/*  set tags=./tags,tags,$HOME/server/depot/main/p4/tags 
+autocmd BufEnter,BufRead */depot/main/*  cd $ppm
+autocmd BufEnter,BufRead */depot/p17.1/*  set tags=./tags,tags,$HOME/server/depot/p17.1/p4/tags 
+autocmd BufEnter,BufRead */depot/p17.2/*  set tags=./tags,tags,$HOME/server/depot/p17.2/p4/tags 
+autocmd BufEnter,BufRead $HOME/gconn/*  set tags=tags,./tags,$HOME/gconn/gconn/src/tags 
 autocmd BufNewFile,BufRead */server/* set ts=8 sw=4 noexpandtab cinoptions=^1s
 autocmd BufNewFile,BufRead */gconn/* set ts=8 sw=4 noexpandtab cinoptions=^1s
-"autocmd FileType cpp let Rgrep_Start_Dir = '/Users/ggibbons/gconn/main-gconn/gconn/src' 
 "set expandtab
 "highlight all matches if the visualmode selection
 :vmap // y/<C-R>"<CR>
@@ -426,9 +431,9 @@ endfunction
 
 :let @r="G?build-result0d%gg/buildtopP"
 "@d will add the ModifiedDate> after every <CreationDate>
-:let @d="/<CreationDatge€kb€kbe>yyp:s/Creationdate€kb€kb€kb€kbDate/ModifiedDate/gj"
+":let @d="/<CreationDatge€kb€kbe>yyp:s/Creationdate€kb€kb€kb€kbDate/ModifiedDate/gj"
 "@t will copy the closest CreationDate/ModifiedDate pair after the <Thread> tag
-:let @t="/<Thread>/€kb/€kb/<CreationDate>2yy?<Thread>pjj"
+":let @t="/<Thread>/€kb/€kb/<CreationDate>2yy?<Thread>pjj"
 "set: tw=0 wrap linebreak
 "function! Esctag()
 " :s/</&lt;/g
@@ -515,7 +520,7 @@ endfunction
 :noremap <leader>b :FufBuffer<CR>
 :noremap <leader>b :FufBuffer<CR>
 :noremap <leader>w <C-W><C-W>
-:noremap <C-A> <C-W><C-W>
+":noremap <C-A> <C-W><C-W>
 :nnoremap \; :<c-u>call MultiCursorSearch('<c-r><c-w>')<cr>
 let g:multicursor_quit = "\:"
 function! Gofl()
@@ -657,7 +662,6 @@ let @d=':%s/^.*DEBUG/DEBUG/^M:%s/^.*INFO/INFO/'
 :inoremap <C-L> <Esc>la
 ":inoremap <C-P> <Esc>/[)}"'\]>]<CR>:nohl<CR>a
 
-"highlight ColorColumn ctermbg=magenta
 "call matchadd('ColorColumn', '\%100v', 100)
 let g:airline#extensions#branch#enabled = 1
 " toggle nu and rnu together
@@ -668,3 +672,9 @@ nnoremap <silent> gc :redir >>matches.tmp<CR>:g//#<CR>:redir END<CR>:new matches
 inoremap <C-a> <ESC>A
 inoremap <C-x> <DEL>
 nnoremap <-C-G> :g/<C-R><C-W>/#<CR>
+":cd %:h
+"below .. find lines <= 25 char
+"/^.\{,25}$/
+"below .. find lines >= 100 char
+"/^.\{100,}$/
+"highlight ColorColumn ctermbg=7 guibg=Grey90
