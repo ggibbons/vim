@@ -1,9 +1,65 @@
+set nocompatible              " be iMproved, required
+inoremap  <Up>     <NOP>
+inoremap  <Down>   <NOP>
+inoremap  <Left>   <NOP>
+inoremap  <Right>  <NOP>
+noremap   <Up>     <NOP>
+noremap   <Down>   <NOP>
+noremap   <Left>   <NOP>
+noremap   <Right>  <NOP>
+filetype off                  " required
+
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+" alternatively, pass a path where Vundle should install plugins
+"call vundle#begin('~/some/path/here')
+
+" let Vundle manage Vundle, required
+Plugin 'VundleVim/Vundle.vim'
+
+" The following are examples of different formats supported.
+" Keep Plugin commands between vundle#begin/end.
+" plugin on GitHub repo
+Plugin 'tpope/vim-fugitive'
+Plugin 'tpope/vim-surround'
+Plugin 'tpope/vim-dispatch'
+" Plugin 'valloric/youcompleteme'
+Plugin 'yegappan/grep'
+Plugin 'ctrlpvim/ctrlp.vim.git'
+" plugin from http://vim-scripts.org/vim/scripts.html
+"Plugin 'L9'
+" Git plugin not hosted on GitHub
+"Plugin 'git://git.wincent.com/command-t.git'
+" git repos on your local machine (i.e. when working on your own plugin)
+"Plugin 'file:///home/gmarik/path/to/plugin'
+" The sparkup vim script is in a subdirectory of this repo called vim.
+" Pass the path to set the runtimepath properly.
+"Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
+" Install L9 and avoid a Naming conflict if you've already installed a
+" different version somewhere else.
+"Plugin 'ascenator/L9', {'name': 'newL9'}
+
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
+filetype plugin indent on    " required
+" To ignore plugin indent changes, instead use:
+filetype plugin on
+"
+" Brief help
+" :PluginList       - lists configured plugins
+" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
+" :PluginSearch foo - searches for foo; append `!` to refresh local cache
+" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
+"
+" see :h vundle for more details or wiki for FAQ
+" Put your non-Plugin stuff after this line
 "set list     shows tailing white space
 "set verbose=9
 "let loaded_matchparen = 1
 "au VimEnter * :NoMatchParen
-set clipboard=unnamed
-call pathogen#infect()
+"set clipboard=unnamed
+"call pathogen#infect()
 set pastetoggle=<F11>
 :if !exists("autocommands_loaded")
 :  let autocommands_loaded = 1
@@ -11,11 +67,13 @@ set pastetoggle=<F11>
 :  au BufWritePost /Users/ggibbons/.vim/doc/gfg.txt bw /Users/ggibbons/.vim/doc/gfg.txt
 :  au BufWritePost /Users/ggibbons/.vim/doc/etl.txt helptags ~/.vim/doc 
 :  au BufWritePost * if getline(1) =~ "^#!/bin/" | silent !chmod a+x <afile>
+:  autocmd BufWritePre *.py :%s/\s\+$//e
 :  autocmd BufWritePost .vimrc source $MYVIMRC
 :  autocmd BufReadPost *
     \ if line("'\"") > 1 && line("'\"") <= line("$") |
     \   exe "normal! g`\"" |
     \ endif
+ 
 :filetype plugin indent on 
 autocmd FileType python set omnifunc=pythoncomplete#Complete
 ":source ~/.vim/plugin/matchit.vim
@@ -27,23 +85,40 @@ autocmd FileType ruby nmap <buffer> <leader>c :w<CR> :!rake
 autocmd FileType python autocmd BufWritePre <buffer> :%s/\s\+$//e
 "autocmd FileType python set path+=.,/Users/ggibbons/gf/gfmain/**
 autocmd FileType perl set path+=/Users/ggibbons/gf/gfmain/**
-autocmd FileType python set makeprg=make\ pylint\ f=%:t:r
+autocmd FileType python set makeprg=make\ pylint\ f=%:t:r\ 2>&1
+"autocmd FileType python set makeprg=pylint\ --reports=n\ --msg-template={path}:{line}: [{msg_id}({symbol}), {obj}] {msg})]  \ %:p
+autocmd FileType python set makeprg=pylint\ --reports=n\ --msg-template=\"{path}:{line}:\ {msg_id}\ {symbol},\ {obj}\ {msg}\"\ %:p
+autocmd FileType python set makeprg=pylint\ --rcfile=pylint13.cfg\ p4gf_log.py\ %:p\ 2>&1
+autocmd FileType python set errorformat=%f:%l:\ %m
 "need absolute path below ...
 
+
+
+""""""""
+" Go to previously edited  file(s) if invoked without arguments.
+autocmd VimLeave * nested if (!isdirectory($HOME . "/.vim")) |
+    \ call mkdir($HOME . "/.vim") |
+    \ endif |
+    \ execute "mksession! " . $HOME . "/.vim/Session.vim"
+
+autocmd VimEnter * nested if argc() == 0 && filereadable($HOME . "/.vim/Session.vim") |
+    \ execute "source " . $HOME . "/.vim/Session.vim"
+""""""""
 nmap <buffer> <leader>pr :new<CR>:r !tannex<CR><CR>
 "  au BufLeave /Users/ggibbons/.vim/doc/gfg.txt bw /Users/ggibbons/.vim/doc/gfg.txt
 :endif
 autocmd FileType html source $HOME/.vim/ftplugin/html.vim
 set nocompatible
-highlight ColorColumn ctermbg=lightgrey guibg=lightgrey
 "set undofile
 "colorscheme darkblue
 " colorscheme gzellner
 colorscheme gfg
-highlight ColorColumn ctermbg=lightgrey guibg=lightgrey
-"set colorcolumn=79
 "filetype on
 syntax on
+highlight ColorColumn ctermbg=7 guibg=Grey90
+set colorcolumn=80
+hi clear SpellBad
+hi SpellBad cterm=underline
 let Tlist_Ctags_Cmd="/usr/local/bin/ctags"
 set tags=./tags,tags
 set path+=.,/Users/ggibbons/gf/gfmain/**
@@ -78,17 +153,29 @@ set fo=troqc
 set backspace=start,indent,eol
 "set whichwrap=b,s,<,>,[,]
 set whichwrap=b,s,<,>,[,
+
+
+set backup                    " keep a backup file
+set backupdir=~/.vim/_backups " store backups here
+set directory=~/.vim/_swaps   " store swap files here
+
+
 ":set <LEFT>=[D
 ":set <RIGHT>=[C
 "replace all occurrences of the word under the cursor and prompt for the
 "replacement string
-:nmap <leader>z :%s#<c-r>=expand("<cword>")<cr>#
+":nmap <leader>z :%s#<c-r>=expand("<cword>")<cr>#
+:nnoremap <leader><Space> :ZoomWin<CR>
 
 "replace all occurrences of the visualmode selected test and prompt for the
 "replacement string
 :vmap <leader>z y:%s/<C-R>"/
 :vmap <leader>] :s/^/#/<CR>:noh<CR>
 :vmap <leader>[ :s/^#//<CR>:noh<CR>
+":vmap <leader>] :s/^/\/\//<CR>:noh<CR>
+":vmap <leader>[ :s/^\/\///<CR>:noh<CR>
+autocmd FileType cpp  vmap <leader>] :s/^/\/\//<CR>:noh<CR>
+autocmd FileType cpp vmap <leader>[ :s/^\/\///<CR>:noh<CR>
 "the following enables vimdiff to ignore whitespace when comparing files
 set diffexpr=MyDiff()
 function! MyDiff()
@@ -145,8 +232,21 @@ hi Cursorline term=underline cterm=underline ctermfg=5 gui=underline guifg=Slate
 :let tag2 = g:MyTagName . "                   *" . a:name ."-" . g:MyTagName . "*"
 :call setline(".",tag2)
 :endfunction
-:let Grep_Default_Filelist = 'bin/*.py' 
-set expandtab
+autocmd FileType python let Grep_Default_Filelist = 'bin/*.py' 
+autocmd FileType python let Grep_Default_Filelist = 'bin/*.py' 
+autocmd FileType cpp let Grep_Default_Filelist = '*.cc *.h' 
+autocmd BufEnter,BufRead */depot/main/*  let Rgrep_Start_Dir = '$HOME/server/depot/main/p4' 
+autocmd BufEnter,BufRead */depot/p17.1/*  let Rgrep_Start_Dir = '$HOME/server/depot/p17.1/p4' 
+autocmd BufEnter,BufRead */depot/p17.2/*  let Rgrep_Start_Dir = '$HOME/server/depot/p17.2/p4' 
+autocmd BufEnter,BufRead $HOME/gconn/*  let Rgrep_Start_Dir = '$HOME/gconn/gconn/src' 
+autocmd BufEnter,BufRead */depot/main/*  set tags=./tags,tags,$HOME/server/depot/main/p4/tags 
+autocmd BufEnter,BufRead */depot/main/*  cd $ppm
+autocmd BufEnter,BufRead */depot/p17.1/*  set tags=./tags,tags,$HOME/server/depot/p17.1/p4/tags 
+autocmd BufEnter,BufRead */depot/p17.2/*  set tags=./tags,tags,$HOME/server/depot/p17.2/p4/tags 
+autocmd BufEnter,BufRead $HOME/gconn/*  set tags=tags,./tags,$HOME/gconn/gconn/src/tags 
+autocmd BufNewFile,BufRead */server/* set ts=8 sw=4 noexpandtab cinoptions=^1s
+autocmd BufNewFile,BufRead */gconn/* set ts=8 sw=4 noexpandtab cinoptions=^1s
+"set expandtab
 "highlight all matches if the visualmode selection
 :vmap // y/<C-R>"<CR>
 :noremap <Space> <PageDown>
@@ -165,15 +265,15 @@ noremap <leader>cs <C-W><C-P>:close<CR>
 ":noremap <C-;> <C-W><C-P>
 :noremap <C-E> <C-W><C-P>
 " map <C-H> to scroll down 
-:noremap <C-H> <C-D>
-:noremap <C-L> <C-U>
+":noremap <C-H> <C-D>
+":noremap <C-L> <C-U>
 set wmh=0
 map \d /<enter<CR>v4ec
 map <F2> /^Files:/<CR>jVG!sed -n -f $HOME/p4submitlist.log<CR>
 map <F3> :let @/=""<CR>
 map <F6> :ls<CR>:e #
 map <F8> :w<CR>:make<CR> 
-map <F12> :set number!<CR>
+map <leader>n :set number!<CR>
 nmap ;q :qa!<CR>
 
 ":let b:match_words = '<td[^>]*>:</td>,<tr[^>]*:</tr>,<table[^>]*>:</table>,<%:%>'
@@ -192,6 +292,7 @@ endfunction
 "set shellpipe=2>&1\|\ tee
 " here is where :make is setup to call javac
 set shellpipe=2>
+set shell=bash\ --login
 "set errorformat=%f:%l:%m
 ":set efm=%A%f:%l:\ %m,%-Z%p^,%-C%.%#
 ":set efm=%A%f:%l:\ %m,%+Z%p^,%+C%.%#,%-G%.%#
@@ -200,6 +301,7 @@ set shellpipe=2>
 "map ;s   :up \| w! %:p:h/<C-R>=strftime("%y%m%d-%H:%M")<CR>--<C-R>=expand("%:t")<CR><CR>
 map ;s :mksession! <cr>
 map ;r :source Session.vim<cr>
+map ;d :bd!<cr>
 
 "add the current path to the vim path variable
 fun! AddPath()
@@ -267,12 +369,11 @@ nmap <M-Right> :bnext<CR>
 
 :nmap <leader>o :cn<CR>
 :nmap <leader>p :cp<CR>
-imap <del> <bs>
 inoremap jj <ESC>
-"inoremap [ []<Left>
-"inoremap ( ()<Left>
-"inoremap { {}<Left>
-set timeoutlen=350
+"inoremap [[ []<Left>
+"inoremap (( ()<Left>
+"inoremap {{ {}<Left>
+set timeoutlen=275
 function! s:DiffWithSaved()
   let filetype=&ft
   diffthis
@@ -305,6 +406,16 @@ function! Inclsub(fstring)
 	return s:fstring
 
 endfunction
+function! ToggleExpSortDir()
+    if g:netrw_sort_direction =~ "reverse"
+        let g:netrw_sort_direction="normal"
+    else
+        let g:netrw_sort_direction="reverse"
+    endif
+endfunction
+nnoremap <silent> ss :call ToggleExpSortDir()<CR>
+
+
 :command! -nargs=* -complete=shellcmd R new | setlocal buftype=nofile bufhidden=hide noswapfile | r !<args>
 set complete-=i
 map gdt vat<Esc>`<df>`>F<df>
@@ -320,9 +431,9 @@ endfunction
 
 :let @r="G?build-result0d%gg/buildtopP"
 "@d will add the ModifiedDate> after every <CreationDate>
-:let @d="/<CreationDatge€kb€kbe>yyp:s/Creationdate€kb€kb€kb€kbDate/ModifiedDate/gj"
+":let @d="/<CreationDatge€kb€kbe>yyp:s/Creationdate€kb€kb€kb€kbDate/ModifiedDate/gj"
 "@t will copy the closest CreationDate/ModifiedDate pair after the <Thread> tag
-:let @t="/<Thread>/€kb/€kb/<CreationDate>2yy?<Thread>pjj"
+":let @t="/<Thread>/€kb/€kb/<CreationDate>2yy?<Thread>pjj"
 "set: tw=0 wrap linebreak
 "function! Esctag()
 " :s/</&lt;/g
@@ -409,6 +520,7 @@ endfunction
 :noremap <leader>b :FufBuffer<CR>
 :noremap <leader>b :FufBuffer<CR>
 :noremap <leader>w <C-W><C-W>
+":noremap <C-A> <C-W><C-W>
 :nnoremap \; :<c-u>call MultiCursorSearch('<c-r><c-w>')<cr>
 let g:multicursor_quit = "\:"
 function! Gofl()
@@ -428,11 +540,14 @@ set <F3>=OR
 set <F4>=OS
 set <F5>=[15~]
 " now map to frequent actions
-:noremap <F1> :noh<CR>
-:noremap <F2> :set nonumber!<CR>
-:noremap <F3> :set nolist!<CR>
-:noremap <F4> :source $MYVIMRC<CR>
-nmap <leader>v :tabedit $MYVIMRC<CR>
+":noremap <F1> :noh<CR>
+":noremap <F2> :set nonumber!<CR>
+":noremap <F3> :set nolist!<CR>
+":noremap <F4> :source $MYVIMRC<CR>
+nmap <leader>v :vertical resize -30<CR>
+nmap <leader>vv :vertical resize +30<CR>
+nmap <leader>r :resize -6<CR>
+nmap <leader>rr :resize +6<CR>
 command! DiffOrig vert new | set bt=nofile | r ++edit # | 0d_ | diffthis | wincmd p | diffthis
 "function! s:DiffWithGITCheckedOut()
 "  let filetype=&ft
@@ -489,12 +604,27 @@ function! ToggleVExplorer()
   endif
 endfunction
 map <silent> <C-E> :call ToggleVExplorer()<CR>
-
+"  http://superuser.com/questions/377501/keep-cursor-in-netrw-window-when-browsing-files-in-vim
 " Hit enter in the file browser to open the selected
 " file with :vsplit to the right of the browser.
-let g:netrw_browse_split = 4
+"let g:netrw_browse_split = 4
 let g:netrw_preview = 1
 let g:netrw_altv = 1
+let g:netrw_sort_by = "time"
+let g:netrw_sort_direction = "reverse"
+" absolute width of netrw window
+"let g:netrw_winsize = -28
+
+" do not display info on the top of window
+let g:netrw_banner = 1
+
+" tree-view
+let g:netrw_liststyle = 3
+
+" sort is affecting only: directories on the top, files below
+
+" use the previous window to open file
+"let g:netrw_browse_split = 4
 
 " Default to tree mode
 let g:netrw_liststyle=3
@@ -511,5 +641,40 @@ nnoremap ,cd :cd %:p:h<CR>
 map <leader>' F"i_(<Esc>2f"a)<Esc>
 map <leader>h :noh<CR>
 map <leader>y :YcmRestartServer<CR>
-map <leader>B :Grep <C-R><C-W> bin/*.py <CR> 
+map <leader>B) :Grep <C-R><C-W> bin/*.py <CR> 
 map <leader>T :Grep <C-R><C-W> p4-test/dev/* <CR> 
+autocmd FileType python map ;b :Grep <C-R><C-W> "%:p:h"/*.py<CR>
+autocmd FileType cpp map ;b :Rgrep <C-R><C-W><CR>
+map ;t :Grep <C-R><C-W> "%:p:h"/* <CR>
+map vv :vertical: resize +30<CR>
+map vb :vertical: resize -30<CR>
+"let g:netrw_list_hide='p4gf_g2p_matrix*,p4gf_fastex*'
+let @d=':%s/^.*DEBUG/DEBUG/^M:%s/^.*INFO/INFO/'
+
+"" braces completion ...
+":inoremap ( ()<Esc>i
+:inoremap (( ()
+":inoremap { {}<Esc>i
+:inoremap {{ {}
+":inoremap [ []<Esc>i
+:inoremap [[ []
+" while in insert mode, move over one char and continue insert
+:inoremap <C-L> <Esc>la
+":inoremap <C-P> <Esc>/[)}"'\]>]<CR>:nohl<CR>a
+
+"call matchadd('ColorColumn', '\%100v', 100)
+let g:airline#extensions#branch#enabled = 1
+" toggle nu and rnu together
+:map ;n :set nu!<CR>:set rnu!<CR>
+:map ;; d$
+"nnoremap <silent> gc :redir @a<CR>:g//#<CR>:redir END<CR>:new<CR>:put! a<CR>
+nnoremap <silent> gc :redir >>matches.tmp<CR>:g//#<CR>:redir END<CR>:new matches.tmp<CR>
+inoremap <C-a> <ESC>A
+inoremap <C-x> <DEL>
+nnoremap <-C-G> :g/<C-R><C-W>/#<CR>
+":cd %:h
+"below .. find lines <= 25 char
+"/^.\{,25}$/
+"below .. find lines >= 100 char
+"/^.\{100,}$/
+"highlight ColorColumn ctermbg=7 guibg=Grey90
