@@ -244,6 +244,7 @@ autocmd BufEnter,BufRead */depot/main/*  cd $ppm
 autocmd BufEnter,BufRead */depot/p17.1/*  set tags=./tags,tags,$HOME/server/depot/p17.1/p4/tags 
 autocmd BufEnter,BufRead */depot/p17.2/*  set tags=./tags,tags,$HOME/server/depot/p17.2/p4/tags 
 autocmd BufEnter,BufRead $HOME/gconn/*  set tags=tags,./tags,$HOME/gconn/gconn/src/tags 
+autocmd BufEnter,BufRead $HOME/gconn/*  set path+=$HOME/gconn/gconn/src/**
 autocmd BufNewFile,BufRead */server/* set ts=8 sw=4 noexpandtab cinoptions=^1s
 autocmd BufNewFile,BufRead */gconn/* set ts=8 sw=4 noexpandtab cinoptions=^1s
 "set expandtab
@@ -345,6 +346,7 @@ function! ZZTop()
 	:endif
 :endfunction
 nmap n nzx
+nmap ne :ne<CR>
 set scrolloff=4
 
 "nmap n nzz
@@ -665,7 +667,9 @@ let @d=':%s/^.*DEBUG/DEBUG/^M:%s/^.*INFO/INFO/'
 "call matchadd('ColorColumn', '\%100v', 100)
 let g:airline#extensions#branch#enabled = 1
 " toggle nu and rnu together
-:map ;n :set nu!<CR>:set rnu!<CR>
+":map ;n :set nu!<CR>:set rnu!<CR>
+:map ;n :set nu!<CR>
+:map ;l :set list!<CR>
 :map ;; d$
 "nnoremap <silent> gc :redir @a<CR>:g//#<CR>:redir END<CR>:new<CR>:put! a<CR>
 nnoremap <silent> gc :redir >>matches.tmp<CR>:g//#<CR>:redir END<CR>:new matches.tmp<CR>
@@ -678,3 +682,6 @@ nnoremap <-C-G> :g/<C-R><C-W>/#<CR>
 "below .. find lines >= 100 char
 "/^.\{100,}$/
 "highlight ColorColumn ctermbg=7 guibg=Grey90
+map oo <C-O>;
+"open tag in vertical window
+nnoremap ]] :vsplit %<CR>g<C-]>
