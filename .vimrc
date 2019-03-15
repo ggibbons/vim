@@ -9,6 +9,7 @@ noremap   <Left>   <NOP>
 noremap   <Right>  <NOP>
 filetype off                  " required
 
+set makeprg=~/bin/mymake
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
@@ -166,6 +167,8 @@ set directory=~/.vim/_swaps   " store swap files here
 "replacement string
 ":nmap <leader>z :%s#<c-r>=expand("<cword>")<cr>#
 :nnoremap <leader><Space> :ZoomWin<CR>
+" macro converts tag to 8 spaces
+nmap ;w xi        
 
 "replace all occurrences of the visualmode selected test and prompt for the
 "replacement string
@@ -238,13 +241,17 @@ autocmd FileType cpp let Grep_Default_Filelist = '*.cc *.h'
 autocmd BufEnter,BufRead */depot/main/*  let Rgrep_Start_Dir = '$HOME/server/depot/main/p4' 
 autocmd BufEnter,BufRead */depot/p17.1/*  let Rgrep_Start_Dir = '$HOME/server/depot/p17.1/p4' 
 autocmd BufEnter,BufRead */depot/p17.2/*  let Rgrep_Start_Dir = '$HOME/server/depot/p17.2/p4' 
-autocmd BufEnter,BufRead $HOME/gconn/*  let Rgrep_Start_Dir = '$HOME/gconn/gconn/src' 
+autocmd BufEnter,BufRead */depot/p18.2/*  let Rgrep_Start_Dir = '$HOME/server/depot/p18.2/p4' 
+autocmd BufEnter,BufRead */depot/p19.1/*  let Rgrep_Start_Dir = '$HOME/server/depot/p19.1/p4' 
+autocmd BufEnter,BufRead */depot/main/gconn/*  let Rgrep_Start_Dir = '$HOME/gconn/gconn/src' 
 autocmd BufEnter,BufRead */depot/main/*  set tags=./tags,tags,$HOME/server/depot/main/p4/tags 
 autocmd BufEnter,BufRead */depot/main/*  cd $ppm
 autocmd BufEnter,BufRead */depot/p17.1/*  set tags=./tags,tags,$HOME/server/depot/p17.1/p4/tags 
 autocmd BufEnter,BufRead */depot/p17.2/*  set tags=./tags,tags,$HOME/server/depot/p17.2/p4/tags 
-autocmd BufEnter,BufRead $HOME/gconn/*  set tags=tags,./tags,$HOME/gconn/gconn/src/tags 
-autocmd BufEnter,BufRead $HOME/gconn/*  set path+=$HOME/gconn/gconn/src/**
+autocmd BufEnter,BufRead */depot/p18.2/*  set tags=./tags,tags,$HOME/server/depot/p18.2/p4/tags 
+autocmd BufEnter,BufRead */depot/p19.1/*  set tags=./tags,tags,$HOME/server/depot/p19.1/p4/tags 
+autocmd BufEnter,BufRead */depot/main/gconn/*  set tags=tags,./tags,$HOME/server/depot/main/gconn/src/tags 
+autocmd BufEnter,BufRead */depot/main/gconn/*  set path+=$HOME/server/depot/main/gconn/src/**
 autocmd BufNewFile,BufRead */server/* set ts=8 sw=4 noexpandtab cinoptions=^1s
 autocmd BufNewFile,BufRead */gconn/* set ts=8 sw=4 noexpandtab cinoptions=^1s
 "set expandtab
@@ -276,6 +283,7 @@ map <F6> :ls<CR>:e #
 map <F8> :w<CR>:make<CR> 
 map <leader>n :set number!<CR>
 nmap ;q :qa!<CR>
+nmap ;v :vert sba<CR>
 
 ":let b:match_words = '<td[^>]*>:</td>,<tr[^>]*:</tr>,<table[^>]*>:</table>,<%:%>'
 ":let b:match_words = '<\([a-zA-z]\)[^>]*>:</\1>'
@@ -390,7 +398,7 @@ nnoremap <silent> + :exe "resize " . (winheight(0) * 3/2)<CR>
 :let g:netrw_longlist=1
 
 " expand path of current buffer's file  .. good for :e or :cd or whatever
-cmap %/ <C-R>=expand("%:p:h")."/"<cr>
+inoremap <leader>f <C-R>=expand("%:p")<CR>
 
 
 
@@ -481,7 +489,7 @@ endfunction
 "let g:miniBufExplMapWindowNavArrows = 1
   let g:miniBufExplMapCTabSwitchBufs = 1
 "let g:miniBufExplModSelTarget = 1 
-cnoremap %% <C-R>=expand('%:h').'/'<cr>
+cnoremap %% <C-R>=expand('%:p')<cr>
 map <leader>ew :e %%
 map <leader>es :sp %%
 map <leader>ev :vsp %%
@@ -671,6 +679,7 @@ let g:airline#extensions#branch#enabled = 1
 :map ;n :set nu!<CR>
 :map ;l :set list!<CR>
 :map ;; d$
+:map ;c :set t_Co=0<CR>
 "nnoremap <silent> gc :redir @a<CR>:g//#<CR>:redir END<CR>:new<CR>:put! a<CR>
 nnoremap <silent> gc :redir >>matches.tmp<CR>:g//#<CR>:redir END<CR>:new matches.tmp<CR>
 inoremap <C-a> <ESC>A
