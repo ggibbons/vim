@@ -84,16 +84,12 @@ au FileType c,cpp,css,javascript,java,html,rb  let b:match_words = &matchpairs
 "autocmd FileType python nmap <buffer> <leader>c :new<CR>:r !pep8 #<CR><CR><C-W><C-P>
 autocmd FileType ruby nmap <buffer> <leader>c :w<CR> :!rake
 autocmd FileType python autocmd BufWritePre <buffer> :%s/\s\+$//e
-"autocmd FileType python set path+=.,/Users/ggibbons/gf/gfmain/**
-autocmd FileType perl set path+=/Users/ggibbons/gf/gfmain/**
-autocmd FileType python set makeprg=make\ pylint\ f=%:t:r\ 2>&1
-"autocmd FileType python set makeprg=pylint\ --reports=n\ --msg-template={path}:{line}: [{msg_id}({symbol}), {obj}] {msg})]  \ %:p
 autocmd FileType python set makeprg=pylint\ --reports=n\ --msg-template=\"{path}:{line}:\ {msg_id}\ {symbol},\ {obj}\ {msg}\"\ %:p
 autocmd FileType python set makeprg=pylint\ --rcfile=pylint13.cfg\ p4gf_log.py\ %:p\ 2>&1
 autocmd FileType python set errorformat=%f:%l:\ %m
 "need absolute path below ...
 
-
+set wildmenu
 
 """"""""
 " Go to previously edited  file(s) if invoked without arguments.
@@ -122,7 +118,6 @@ hi clear SpellBad
 hi SpellBad cterm=underline
 let Tlist_Ctags_Cmd="/usr/local/bin/ctags"
 set tags=./tags,tags
-set path+=.,/Users/ggibbons/gf/gfmain/**
 set includeexpr=Inclsub(v:fname)
 set suffixesadd=.java
 set autoindent
@@ -168,7 +163,10 @@ set directory=~/.vim/_swaps   " store swap files here
 ":nmap <leader>z :%s#<c-r>=expand("<cword>")<cr>#
 :nnoremap <leader><Space> :ZoomWin<CR>
 " macro converts tag to 8 spaces
-nmap ;w xi        
+nmap ;w xi        l
+"vmap ;e :%s/^\t/        <CR>
+" Still needs work :g does all lines, but just s failes if no match 
+"vmap ;e :'<,'>g/^\t\t\t/s/^\t\t\t/\t                 <CR> \| :'<,'>g/^\t\t/s/^\t\t/\t        <CR>
 
 "replace all occurrences of the visualmode selected test and prompt for the
 "replacement string
@@ -235,6 +233,7 @@ hi Cursorline term=underline cterm=underline ctermfg=5 gui=underline guifg=Slate
 :let tag2 = g:MyTagName . "                   *" . a:name ."-" . g:MyTagName . "*"
 :call setline(".",tag2)
 :endfunction
+:let g:mypath = &path
 autocmd FileType python let Grep_Default_Filelist = 'bin/*.py' 
 autocmd FileType python let Grep_Default_Filelist = 'bin/*.py' 
 autocmd FileType cpp let Grep_Default_Filelist = '*.cc *.h' 
@@ -243,17 +242,26 @@ autocmd BufEnter,BufRead */depot/p17.1/*  let Rgrep_Start_Dir = '$HOME/server/de
 autocmd BufEnter,BufRead */depot/p17.2/*  let Rgrep_Start_Dir = '$HOME/server/depot/p17.2/p4' 
 autocmd BufEnter,BufRead */depot/p18.2/*  let Rgrep_Start_Dir = '$HOME/server/depot/p18.2/p4' 
 autocmd BufEnter,BufRead */depot/p19.1/*  let Rgrep_Start_Dir = '$HOME/server/depot/p19.1/p4' 
-autocmd BufEnter,BufRead */depot/main/gconn/*  let Rgrep_Start_Dir = '$HOME/gconn/gconn/src' 
+autocmd BufEnter,BufRead */depot/main/gconn/*  let Rgrep_Start_Dir = '$HOME/server/depot/main/gconn/src' 
+autocmd BufEnter,BufRead */depot/p18.2/gconn/*  let Rgrep_Start_Dir = '$HOME/server/depot/p18.2/gconn/src' 
+autocmd BufEnter,BufRead */depot/p19.1/gconn/*  let Rgrep_Start_Dir = '$HOME/server/depot/p19.1/gconn/src' 
 autocmd BufEnter,BufRead */depot/main/*  set tags=./tags,tags,$HOME/server/depot/main/p4/tags 
-autocmd BufEnter,BufRead */depot/main/*  cd $ppm
+"autocmd BufEnter,BufRead */depot/main/*  cd $ppm
 autocmd BufEnter,BufRead */depot/p17.1/*  set tags=./tags,tags,$HOME/server/depot/p17.1/p4/tags 
 autocmd BufEnter,BufRead */depot/p17.2/*  set tags=./tags,tags,$HOME/server/depot/p17.2/p4/tags 
 autocmd BufEnter,BufRead */depot/p18.2/*  set tags=./tags,tags,$HOME/server/depot/p18.2/p4/tags 
+autocmd BufEnter,BufRead */depot/p18.2/*  set path+=$HOME/server/depot/p18.2/**
+autocmd BufEnter,BufRead */depot/p18.2/gconn/*  set path=.,/usr/include,$HOME/server/depot/p18.2/gconn/src/**
 autocmd BufEnter,BufRead */depot/p19.1/*  set tags=./tags,tags,$HOME/server/depot/p19.1/p4/tags 
-autocmd BufEnter,BufRead */depot/main/gconn/*  set tags=tags,./tags,$HOME/server/depot/main/gconn/src/tags 
+autocmd BufEnter,BufRead */depot/p19.1/*  set path+=$HOME/server/depot/p19.1/**
+autocmd BufEnter,BufRead */depot/main/*  set path+=$HOME/server/depot/main/**
+autocmd BufEnter,BufRead */depot/main/*  set tags=tags,./tags,$HOME/server/depot/main/gconn/src/tags 
 autocmd BufEnter,BufRead */depot/main/gconn/*  set path+=$HOME/server/depot/main/gconn/src/**
+autocmd BufEnter,BufRead */depot/p19.1/gconn/*  set tags=tags,./tags,$HOME/server/depot/p19.1/gconn/src/tags 
+"autocmd BufEnter,BufRead */depot/p19.1/gconn/*  set path+=$HOME/server/depot/p19.1/gconn/src/**
+autocmd BufEnter,BufRead */depot/p19.1/gconn/*  set path=.,/usr/include,$HOME/server/depot/p19.1/gconn/src/**
 autocmd BufNewFile,BufRead */server/* set ts=8 sw=4 noexpandtab cinoptions=^1s
-autocmd BufNewFile,BufRead */gconn/* set ts=8 sw=4 noexpandtab cinoptions=^1s
+autocmd BufNewFile,BufRead */gconn/*  set ts=8 sw=4 noexpandtab cinoptions=^1s
 "set expandtab
 "highlight all matches if the visualmode selection
 :vmap // y/<C-R>"<CR>
@@ -682,8 +690,7 @@ let g:airline#extensions#branch#enabled = 1
 :map ;c :set t_Co=0<CR>
 "nnoremap <silent> gc :redir @a<CR>:g//#<CR>:redir END<CR>:new<CR>:put! a<CR>
 nnoremap <silent> gc :redir >>matches.tmp<CR>:g//#<CR>:redir END<CR>:new matches.tmp<CR>
-inoremap <C-a> <ESC>A
-inoremap <C-x> <DEL>
+"inoremap <C-a> <ESC>A
 nnoremap <-C-G> :g/<C-R><C-W>/#<CR>
 ":cd %:h
 "below .. find lines <= 25 char
@@ -694,3 +701,5 @@ nnoremap <-C-G> :g/<C-R><C-W>/#<CR>
 map oo <C-O>;
 "open tag in vertical window
 nnoremap ]] :vsplit %<CR>g<C-]>
+nnoremap Q !!$SHELL<CR>
+
