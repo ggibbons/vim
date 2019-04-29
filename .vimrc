@@ -163,7 +163,6 @@ set directory=~/.vim/_swaps   " store swap files here
 ":nmap <leader>z :%s#<c-r>=expand("<cword>")<cr>#
 :nnoremap <leader><Space> :ZoomWin<CR>
 " macro converts tag to 8 spaces
-nmap ;w xi        l
 "vmap ;e :%s/^\t/        <CR>
 " Still needs work :g does all lines, but just s failes if no match 
 "vmap ;e :'<,'>g/^\t\t\t/s/^\t\t\t/\t                 <CR> \| :'<,'>g/^\t\t/s/^\t\t/\t        <CR>
@@ -703,3 +702,13 @@ map oo <C-O>;
 nnoremap ]] :vsplit %<CR>g<C-]>
 nnoremap Q !!$SHELL<CR>
 
+function! FixTabs() range
+    " Get the line and column of the visual selection marks
+    let [lnum1, col1] = getpos("'<")[1:2]
+    let [lnum2, col2] = getpos("'>")[1:2]
+    execute lnum1 . ',' . lnum2 .  "g/^\t\t\t/s/^\t\t\t/\t                "
+    execute lnum1 . ',' . lnum2 . "g/^\t\t/s/^\t\t/\t        "
+endfunction
+
+vmap  <silent> ;w :call FixTabs()<CR>
+"nmap ;w xi        l
