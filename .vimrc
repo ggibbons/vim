@@ -703,22 +703,22 @@ nnoremap ]] :vsplit %<CR>g<C-]>
 nnoremap Q !!$SHELL<CR>
 
 function! FixTabs(...)
-	" Replace left justified 3 TABS with 1 TAB and spaces
-	" Then replace left justified 2 TABS with 1 TAB and spaces
-	" Assumes:  tabstop=8   shiftwith=4  softtabstop=4
+    " Replace left justified 3 TABS with 1 TAB and spaces
+    " Then replace left justified 2 TABS with 1 TAB and spaces
+    " Assumes:  tabstop=8   shiftwith=4  softtabstop=4
     " If no args, get the line and column of the visual selection marks
     " If any arg, process the entire file
-	"
-	if a:0 == 0
-		let [lnum1, col1] = getpos("'<")[1:2]
-		let [lnum2, col2] = getpos("'>")[1:2]
-		execute "silent " . lnum1 . ',' . lnum2 .  "g/^\t\t\t/s/^\t\t\t/\t                "
-		execute "silent " . lnum1 . ',' . lnum2 . "g/^\t\t/s/^\t\t/\t        "
+    "
+    if a:0 == 0
+        let [lnum1, col1] = getpos("'<")[1:2]
+        let [lnum2, col2] = getpos("'>")[1:2]
+        execute "silent " . lnum1 . ',' . lnum2 .  "g/^\t\t\t/s/^\t\t\t/\t                "
+        execute "silent " . lnum1 . ',' . lnum2 . "g/^\t\t/s/^\t\t/\t        "
     " Process the entire file
     else
-		execute "silent g/^\t\t\t/s/^\t\t\t/\t                "
-		execute "silent g/^\t\t/s/^\t\t/\t        "
-	endif
+        execute "silent g/^\t\t\t/s/^\t\t\t/\t                "
+        execute "silent g/^\t\t/s/^\t\t/\t        "
+    endif
 endfunction
 
 vnoremap <silent> ;w :call FixTabs()<CR>
