@@ -702,13 +702,21 @@ map oo <C-O>;
 nnoremap ]] :vsplit %<CR>g<C-]>
 nnoremap Q !!$SHELL<CR>
 
-function! FixTabs() range
+function! FixTabs(...)
     " Get the line and column of the visual selection marks
-    let [lnum1, col1] = getpos("'<")[1:2]
-    let [lnum2, col2] = getpos("'>")[1:2]
-    execute lnum1 . ',' . lnum2 .  "g/^\t\t\t/s/^\t\t\t/\t                "
-    execute lnum1 . ',' . lnum2 . "g/^\t\t/s/^\t\t/\t        "
+	" Pass in any argument, then process the file
+	"
+	if a:0 == 0
+		let [lnum1, col1] = getpos("'<")[1:2]
+		let [lnum2, col2] = getpos("'>")[1:2]
+		execute "silent " . lnum1 . ',' . lnum2 .  "g/^\t\t\t/s/^\t\t\t/\t                "
+		execute "silent " . lnum1 . ',' . lnum2 . "g/^\t\t/s/^\t\t/\t        "
+    " Process the entire file
+    else
+		execute "silent g/^\t\t\t/s/^\t\t\t/\t                "
+		execute "silent g/^\t\t/s/^\t\t/\t        "
+	endif
 endfunction
 
-vmap  <silent> ;w :call FixTabs()<CR>
-"nmap ;w xi        l
+vmap ;w :call FixTabs()<CR>
+nmap ;w :call FixTabs(1)<CR>
