@@ -703,8 +703,11 @@ nnoremap ]] :vsplit %<CR>g<C-]>
 nnoremap Q !!$SHELL<CR>
 
 function! FixTabs(...)
-    " Get the line and column of the visual selection marks
-	" Pass in any argument, then process the file
+	" Replace left justified 3 TABS with 1 TAB and spaces
+	" Then replace left justified 2 TABS with 1 TAB and spaces
+	" Assumes:  tabstop=8   shiftwith=4  softtabstop=4
+    " If no args, get the line and column of the visual selection marks
+    " If any arg, process the entire file
 	"
 	if a:0 == 0
 		let [lnum1, col1] = getpos("'<")[1:2]
@@ -718,5 +721,5 @@ function! FixTabs(...)
 	endif
 endfunction
 
-vmap ;w :call FixTabs()<CR>
-nmap ;w :call FixTabs(1)<CR>
+vnoremap <silent> ;w :call FixTabs()<CR>
+nnoremap <silent> ;w :call FixTabs(1)<CR>
