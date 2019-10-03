@@ -1,2 +1,3 @@
 netrw.vba: call delete('/Users/ggibbons/.vim/plugin/netrwPlugin.vim')|call delete('/Users/ggibbons/.vim/autoload/netrw.vim')|call delete('/Users/ggibbons/.vim/autoload/netrwFileHandlers.vim')|call delete('/Users/ggibbons/.vim/autoload/netrwSettings.vim')|call delete('/Users/ggibbons/.vim/doc/pi_netrw.txt')|call delete('/Users/ggibbons/.vim/syntax/netrw.vim')
 ZoomWin.vba: call delete('/Users/ggibbons/.vim/plugin/ZoomWinPlugin.vim')|call delete('/Users/ggibbons/.vim/doc/ZoomWin.txt')|call delete('/Users/ggibbons/.vim/autoload/ZoomWin.vim')
+qfn.vba: call delete('/home/ggibbons/.vim/plugin/qfn.vim')|call delete('/home/ggibbons/.vim/doc/qfn.txt')

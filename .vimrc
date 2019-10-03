@@ -9,7 +9,7 @@ noremap   <Left>   <NOP>
 noremap   <Right>  <NOP>
 filetype off                  " required
 
-set makeprg=~/bin/mymake
+"set makeprg=~/bin/mymake
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
@@ -172,8 +172,6 @@ set directory=~/.vim/_swaps   " store swap files here
 :vmap <leader>z y:%s/<C-R>"/
 :vmap <leader>] :s/^/#/<CR>:noh<CR>
 :vmap <leader>[ :s/^#//<CR>:noh<CR>
-":vmap <leader>] :s/^/\/\//<CR>:noh<CR>
-":vmap <leader>[ :s/^\/\///<CR>:noh<CR>
 autocmd FileType cpp  vmap <leader>] :s/^/\/\//<CR>:noh<CR>
 autocmd FileType cpp vmap <leader>[ :s/^\/\///<CR>:noh<CR>
 "the following enables vimdiff to ignore whitespace when comparing files
@@ -251,11 +249,12 @@ autocmd BufEnter,BufRead */depot/p17.2/*  set tags=./tags,tags,$HOME/server/depo
 autocmd BufEnter,BufRead */depot/p18.2/*  set tags=./tags,tags,$HOME/server/depot/p18.2/p4/tags 
 autocmd BufEnter,BufRead */depot/p18.2/*  set path+=$HOME/server/depot/p18.2/**
 autocmd BufEnter,BufRead */depot/p18.2/gconn/*  set path=.,/usr/include,$HOME/server/depot/p18.2/gconn/src/**
-autocmd BufEnter,BufRead */depot/p19.1/*  set tags=./tags,tags,$HOME/server/depot/p19.1/p4/tags 
+autocmd BufEnter,BufRead */depot/p19.1/*  set tags=$HOME/server/depot/p19.1/p4/tags,./tags,tags
 autocmd BufEnter,BufRead */depot/p19.1/*  set path+=$HOME/server/depot/p19.1/**
 autocmd BufEnter,BufRead */depot/main/*  set path+=$HOME/server/depot/main/**
-autocmd BufEnter,BufRead */depot/main/*  set tags=tags,./tags,$HOME/server/depot/main/p4/tags 
+autocmd BufEnter,BufRead */depot/main/*  set tags=$HOME/server/depot/main/p4/tags,./tags,tags
 autocmd BufEnter,BufRead */depot/main/gconn/*  set path+=$HOME/server/depot/main/gconn/src/**
+autocmd BufEnter,BufRead */depot/main/gconn/*  set tags=tags,./tags,$HOME/server/depot/main/gconn/src/tags 
 autocmd BufEnter,BufRead */depot/p19.1/gconn/*  set tags=tags,./tags,$HOME/server/depot/p19.1/gconn/src/tags 
 "autocmd BufEnter,BufRead */depot/p19.1/gconn/*  set path+=$HOME/server/depot/p19.1/gconn/src/**
 autocmd BufEnter,BufRead */depot/p19.1/gconn/*  set path=.,/usr/include,$HOME/server/depot/p19.1/gconn/src/**
@@ -308,7 +307,7 @@ endfunction
 "set shellpipe=2>&1\|\ tee
 " here is where :make is setup to call javac
 set shellpipe=2>
-set shell=bash\ --login
+"set shell=bash\ --login
 "set errorformat=%f:%l:%m
 ":set efm=%A%f:%l:\ %m,%-Z%p^,%-C%.%#
 ":set efm=%A%f:%l:\ %m,%+Z%p^,%+C%.%#,%-G%.%#
@@ -712,6 +711,7 @@ function! FixTabs(...)
     if a:0 == 0
         let [lnum1, col1] = getpos("'<")[1:2]
         let [lnum2, col2] = getpos("'>")[1:2]
+        execute "silent " . lnum1 . ',' . lnum2 .  "g/^\t\t\t\t/s/^\t\t\t\t/\t                        "
         execute "silent " . lnum1 . ',' . lnum2 .  "g/^\t\t\t/s/^\t\t\t/\t                "
         execute "silent " . lnum1 . ',' . lnum2 . "g/^\t\t/s/^\t\t/\t        "
     " Process the entire file
