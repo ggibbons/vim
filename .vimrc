@@ -238,10 +238,8 @@ autocmd BufEnter,BufRead */depot/main/*  let Rgrep_Start_Dir = '$HOME/server/dep
 autocmd BufEnter,BufRead */depot/p17.1/*  let Rgrep_Start_Dir = '$HOME/server/depot/p17.1/p4' 
 autocmd BufEnter,BufRead */depot/p17.2/*  let Rgrep_Start_Dir = '$HOME/server/depot/p17.2/p4' 
 autocmd BufEnter,BufRead */depot/p18.2/*  let Rgrep_Start_Dir = '$HOME/server/depot/p18.2/p4' 
-autocmd BufEnter,BufRead */depot/p19.1/*  let Rgrep_Start_Dir = '$HOME/server/depot/p19.1/p4' 
 autocmd BufEnter,BufRead */depot/main/gconn/*  let Rgrep_Start_Dir = '$HOME/server/depot/main/gconn/src' 
 autocmd BufEnter,BufRead */depot/p18.2/gconn/*  let Rgrep_Start_Dir = '$HOME/server/depot/p18.2/gconn/src' 
-autocmd BufEnter,BufRead */depot/p19.1/gconn/*  let Rgrep_Start_Dir = '$HOME/server/depot/p19.1/gconn/src' 
 autocmd BufEnter,BufRead */depot/main/*  set tags=./tags,tags,$HOME/server/depot/main/p4/tags 
 "autocmd BufEnter,BufRead */depot/main/*  cd $ppm
 autocmd BufEnter,BufRead */depot/p17.1/*  set tags=./tags,tags,$HOME/server/depot/p17.1/p4/tags 
@@ -249,15 +247,27 @@ autocmd BufEnter,BufRead */depot/p17.2/*  set tags=./tags,tags,$HOME/server/depo
 autocmd BufEnter,BufRead */depot/p18.2/*  set tags=./tags,tags,$HOME/server/depot/p18.2/p4/tags 
 autocmd BufEnter,BufRead */depot/p18.2/*  set path+=$HOME/server/depot/p18.2/**
 autocmd BufEnter,BufRead */depot/p18.2/gconn/*  set path=.,/usr/include,$HOME/server/depot/p18.2/gconn/src/**
-autocmd BufEnter,BufRead */depot/p19.1/*  set tags=$HOME/server/depot/p19.1/p4/tags,./tags,tags
-autocmd BufEnter,BufRead */depot/p19.1/*  set path+=$HOME/server/depot/p19.1/**
 autocmd BufEnter,BufRead */depot/main/*  set path+=$HOME/server/depot/main/**
 autocmd BufEnter,BufRead */depot/main/*  set tags=$HOME/server/depot/main/p4/tags,./tags,tags
 autocmd BufEnter,BufRead */depot/main/gconn/*  set path+=$HOME/server/depot/main/gconn/src/**
 autocmd BufEnter,BufRead */depot/main/gconn/*  set tags=tags,./tags,$HOME/server/depot/main/gconn/src/tags 
+" 19.1 autocmd
+autocmd BufEnter,BufRead */depot/p19.1/*  let Rgrep_Start_Dir = '$HOME/server/depot/p19.1/p4' 
 autocmd BufEnter,BufRead */depot/p19.1/gconn/*  set tags=tags,./tags,$HOME/server/depot/p19.1/gconn/src/tags 
+autocmd BufEnter,BufRead */depot/p19.1/gconn/*  let Rgrep_Start_Dir = '$HOME/server/depot/p19.1/gconn/src' 
+autocmd BufEnter,BufRead */depot/p19.1/*  set tags=$HOME/server/depot/p19.1/p4/tags,./tags,tags
+autocmd BufEnter,BufRead */depot/p19.1/*  set path+=$HOME/server/depot/p19.1/**
 "autocmd BufEnter,BufRead */depot/p19.1/gconn/*  set path+=$HOME/server/depot/p19.1/gconn/src/**
 autocmd BufEnter,BufRead */depot/p19.1/gconn/*  set path=.,/usr/include,$HOME/server/depot/p19.1/gconn/src/**
+" 19.2 autocmd
+autocmd BufEnter,BufRead */depot/p19.2/*  let Rgrep_Start_Dir = '$HOME/server/depot/p19.2/p4' 
+autocmd BufEnter,BufRead */depot/p19.2/gconn/*  set tags=tags,./tags,$HOME/server/depot/p19.2/gconn/src/tags 
+autocmd BufEnter,BufRead */depot/p19.2/gconn/*  let Rgrep_Start_Dir = '$HOME/server/depot/p19.2/gconn/src' 
+autocmd BufEnter,BufRead */depot/p19.2/*  set tags=$HOME/server/depot/p19.2/p4/tags,./tags,tags
+autocmd BufEnter,BufRead */depot/p19.2/*  set path+=$HOME/server/depot/p19.2/**
+"autocmd BufEnter,BufRead */depot/p19.2/gconn/*  set path+=$HOME/server/depot/p19.2/gconn/src/**
+autocmd BufEnter,BufRead */depot/p19.2/gconn/*  set path=.,/usr/include,$HOME/server/depot/p19.2/gconn/src/**
+
 autocmd BufNewFile,BufRead */server/* set ts=8 sw=4 noexpandtab cinoptions=^1s
 autocmd BufNewFile,BufRead */gconn/*  set ts=8 sw=4 noexpandtab cinoptions=^1s
 "set expandtab
