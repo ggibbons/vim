@@ -188,6 +188,16 @@ function! MyDiff()
 	\  " > " . v:fname_out
 endfunction
 
+if &diff
+ map gs :call IwhiteToggle()<CR>
+ function! IwhiteToggle()
+   if &diffopt =~ 'iwhite'
+	 set diffopt-=iwhite
+   else
+	 set diffopt+=iwhite
+   endif
+ endfunction
+endif
 "these mappings apply to VisualMode 
 "
 :set ssop+=buffers
@@ -268,6 +278,13 @@ autocmd BufEnter,BufRead */depot/p19.2/*  set path+=$HOME/server/depot/p19.2/**
 "autocmd BufEnter,BufRead */depot/p19.2/gconn/*  set path+=$HOME/server/depot/p19.2/gconn/src/**
 autocmd BufEnter,BufRead */depot/p19.2/gconn/*  set path=.,/usr/include,$HOME/server/depot/p19.2/gconn/src/**
 
+autocmd BufEnter,BufRead */depot/p20.1/*  let Rgrep_Start_Dir = '$HOME/server/depot/p20.1/p4' 
+autocmd BufEnter,BufRead */depot/p20.1/gconn/*  set tags=tags,./tags,$HOME/server/depot/p20.1/gconn/src/tags 
+autocmd BufEnter,BufRead */depot/p20.1/gconn/*  let Rgrep_Start_Dir = '$HOME/server/depot/p20.1/gconn/src' 
+autocmd BufEnter,BufRead */depot/p20.1/*  set tags=$HOME/server/depot/p20.1/p4/tags,./tags,tags
+autocmd BufEnter,BufRead */depot/p20.1/*  set path+=$HOME/server/depot/p20.1/**
+"autocmd BufEnter,BufRead */depot/p20.1/gconn/*  set path+=$HOME/server/depot/p20.1/gconn/src/**
+autocmd BufEnter,BufRead */depot/p20.1/gconn/*  set path=.,/usr/include,$HOME/server/depot/p20.1/gconn/src/**
 autocmd BufNewFile,BufRead */server/* set ts=8 sw=4 noexpandtab cinoptions=^1s
 autocmd BufNewFile,BufRead */gconn/*  set ts=8 sw=4 noexpandtab cinoptions=^1s
 "set expandtab
@@ -655,6 +672,8 @@ let g:netrw_liststyle = 3
 " Default to tree mode
 let g:netrw_liststyle=3
 
+autocmd FileType netrw setl bufhidden=delete " or use :qa!
+
 " Change directory to the current buffer when opening files.
 "set autochdir
 
@@ -708,7 +727,7 @@ nnoremap <-C-G> :g/<C-R><C-W>/#<CR>
 "highlight ColorColumn ctermbg=7 guibg=Grey90
 map oo <C-O>;
 "open tag in vertical window
-nnoremap ]] :vsplit %<CR>g<C-]>
+"nnoremap ]] :vsplit %<CR>g<C-]>
 nnoremap Q !!$SHELL<CR>
 
 function! FixTabs(...)
@@ -733,3 +752,24 @@ endfunction
 
 vnoremap <silent> ;w :call FixTabs()<CR>
 nnoremap <silent> ;w :call FixTabs(1)<CR>
+
+" Call diff -w  to ignore whitespace
+set diffopt+=iwhite
+set diffexpr=DiffW()
+function DiffW()
+  let opt = ""
+   if &diffopt =~ "icase"
+     let opt = opt . "-i "
+   endif
+   if &diffopt =~ "iwhite"
+     let opt = opt . "-w " " swapped vim's -b with -w
+   endif
+   silent execute "!diff -a --binary " . opt .
+     \ v:fname_in . " " . v:fname_new .  " > " . v:fname_out
+endfunction
+"nnoremap ;x O#<ESC>\|j\|o#<ESC>
+nnoremap ;x O<ESC>\|j\|o<ESC>
+nnoremap ;z :s/note/like/ \| :s/;/, qr:fixme:, "fixmsg";/ <CR>
+command! -nargs=? Filter let @a='' | execute 'g/<args>/y# A' | new | setlocal bt=nofile | put! a
+nnoremap ;g :redir @a<CR>:g//#<CR>:redir END<CR>:new<CR>:put! a<CR>
+nnoremap cc 0i#<ESC>
