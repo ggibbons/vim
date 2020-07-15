@@ -715,6 +715,7 @@ let g:airline#extensions#branch#enabled = 1
 :map ;l :set list!<CR>
 :map ;; d$
 :map ;c :set t_Co=0<CR>
+:map ;cb :windo set scb!<CR>
 "nnoremap <silent> gc :redir @a<CR>:g//#<CR>:redir END<CR>:new<CR>:put! a<CR>
 nnoremap <silent> gc :redir >>matches.tmp<CR>:g//#<CR>:redir END<CR>:new matches.tmp<CR>
 "inoremap <C-a> <ESC>A
@@ -767,9 +768,66 @@ function DiffW()
    silent execute "!diff -a --binary " . opt .
      \ v:fname_in . " " . v:fname_new .  " > " . v:fname_out
 endfunction
+
+" Usage:
+" :call Annotate()
+" or
+" :call Annote(1)
+" Must be called while in the perforce source window.
+"
+" open a new vertical buffer
+" run p4 annotate on the previous buffer's fname.
+" by default show change numbers
+" pass any argument to show rev numbers
+function Annotate(...)
+	let g:gfgFname=expand('%:p')  
+	:vnew
+	if a:0 < 1 
+	  :execute ":read !p4 annotate -c " . g:gfgFname
+	else
+	  :execute ":read !p4 annotate " . g:gfgFname
+	endif
+endfunction
+
+function GetChangeFromRev(revNum)
+	:redir @r 
+	":execute "!p4 filelog " .  g:gfgFname . " | grep " . a:revNum . " | cut -d ' ' -f4"
+	:execute "!p4 filelog " .  g:gfgFname . " | grep " . a:revNum
+	:redir END
+endfunction
+
 "nnoremap ;x O#<ESC>\|j\|o#<ESC>
 nnoremap ;x O<ESC>\|j\|o<ESC>
 nnoremap ;z :s/note/like/ \| :s/;/, qr:fixme:, "fixmsg";/ <CR>
 command! -nargs=? Filter let @a='' | execute 'g/<args>/y# A' | new | setlocal bt=nofile | put! a
 nnoremap ;g :redir @a<CR>:g//#<CR>:redir END<CR>:new<CR>:put! a<CR>
-nnoremap cc 0i#<ESC>
+nnoremap c0 0i#
+
+"
+" Insert triple # c comment
+" Smart enought to wrap non blank line with # above and below
+" Or start inset mode on middle or 3 blank # comments
+" #
+" # comment
+" # 
+function InsertComment()
+	let l:firstc=getline('.')[0] 
+	if getline('.') =~ '^\s*$'
+		exe "norm! 0i# "
+		exe "norm! O"
+		exe "norm! jo"
+		exe "norm! k"
+		:startinsert! 
+	elseif l:firstc == "#"
+		exe "norm! O"
+		exe "norm! jo"
+		exe "norm! k$"
+	else
+		exe "norm! 0i# "
+		exe "norm! O"
+		exe "norm! jo"
+		exe "norm! k$"
+	endif
+endfunction
+
+nnoremap dc :call InsertComment()<CR>
