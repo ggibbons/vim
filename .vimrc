@@ -107,9 +107,7 @@ nmap <buffer> <leader>pr :new<CR>:r !tannex<CR><CR>
 autocmd FileType html source $HOME/.vim/ftplugin/html.vim
 set nocompatible
 "set undofile
-"colorscheme darkblue
-" colorscheme gzellner
-colorscheme gfg
+colorscheme gfg 
 "filetype on
 syntax on
 highlight ColorColumn ctermbg=7 guibg=Grey90
@@ -244,6 +242,7 @@ hi Cursorline term=underline cterm=underline ctermfg=5 gui=underline guifg=Slate
 autocmd FileType python let Grep_Default_Filelist = 'bin/*.py' 
 autocmd FileType python let Grep_Default_Filelist = 'bin/*.py' 
 autocmd FileType cpp let Grep_Default_Filelist = '*.cc *.h' 
+autocmd FileType cpp set number
 autocmd BufEnter,BufRead */depot/main/*  let Rgrep_Start_Dir = '$HOME/server/depot/main/p4' 
 autocmd BufEnter,BufRead */depot/p17.1/*  let Rgrep_Start_Dir = '$HOME/server/depot/p17.1/p4' 
 autocmd BufEnter,BufRead */depot/p17.2/*  let Rgrep_Start_Dir = '$HOME/server/depot/p17.2/p4' 
@@ -712,6 +711,7 @@ let g:airline#extensions#branch#enabled = 1
 " toggle nu and rnu together
 ":map ;n :set nu!<CR>:set rnu!<CR>
 :map ;n :set nu!<CR>
+:map ;nn :windo set nu!<CR>
 :map ;l :set list!<CR>
 :map ;; d$
 :map ;c :set t_Co=0<CR>

@@ -9,7 +9,7 @@ hi clear
 if exists("syntax_on")
   syntax reset
 endif
-let g:colors_name = "gzellner"
+let g:colors_name = "gfg"
 hi TabLineSel ctermfg=Blue
 
 hi Comment term=bold ctermfg=Red guifg=Red
@@ -27,8 +27,8 @@ hi Tag term=bold ctermfg=DarkGreen guifg=DarkGreen
 hi Error term=reverse ctermfg=15 ctermbg=9 guibg=Red guifg=White
 hi Todo term=standout ctermbg=Yellow ctermfg=Black guifg=Blue guibg=Yellow
 hi  StatusLine term=bold,reverse cterm=NONE ctermfg=Yellow ctermbg=DarkGray gui=NONE guifg=Yellow guibg=DarkGray
-hi DiffText ctermbg=Red ctermfg=White guibg=Red guifg=White
-hi DiffChange ctermbg=Brown guibg=Brown
+hi DiffChange term=bold ctermbg=Gray guibg=Yellow ctermfg=White
+hi DiffText term=reverse cterm=bold ctermbg=Gray gui=bold guibg=LightBlue ctermfg=Blue
 hi DiffAdd   term=bold ctermbg=4 ctermfg=White guibg=LightBlue guifg=White
 hi LineNr term=underline ctermfg=Blue guifg=Blue
 hi Visual term=reverse cterm=bold,reverse ctermfg=Red ctermbg=White guifg=Red guibg=White
